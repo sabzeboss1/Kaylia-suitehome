@@ -1,0 +1,264 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #f8f9fc;
+    color: #1a1f36;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #b3b9cd;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #8d96b4;
+  }
+}
+
+@layer components {
+  /* Card system */
+  .card {
+    @apply bg-white rounded-xl border border-gray-200 transition-all duration-200;
+    box-shadow: 0 1px 3px rgba(26, 31, 54, 0.06), 0 1px 2px rgba(26, 31, 54, 0.04);
+  }
+
+  .card:hover {
+    box-shadow: 0 10px 25px rgba(26, 31, 54, 0.08), 0 4px 10px rgba(26, 31, 54, 0.05);
+  }
+
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-100;
+  }
+
+  .card-body {
+    @apply px-6 py-5;
+  }
+
+  /* Stat card with gradient */
+  .stat-card {
+    @apply relative overflow-hidden rounded-xl p-6 text-white transition-all duration-300;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    background: radial-gradient(circle at top right, rgba(197, 164, 126, 0.4), transparent 60%);
+  }
+
+  /* Button system */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    background-color: #1a1f36;
+    color: white;
+  }
+  .btn-primary:hover {
+    background-color: #272e47;
+  }
+  .btn-primary:focus {
+    --tw-ring-color: #4a5578;
+  }
+  .btn-primary:active {
+    background-color: #111428;
+  }
+
+  .btn-gold {
+    background-color: #c5a47e;
+    color: white;
+  }
+  .btn-gold:hover {
+    background-color: #b08a5b;
+  }
+
+  .btn-outline {
+    @apply border text-gray-700 hover:bg-gray-50;
+    border-color: #b3b9cd;
+  }
+
+  .btn-ghost {
+    color: #343d5c;
+  }
+  .btn-ghost:hover {
+    background-color: #f0f1f5;
+    color: #1a1f36;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  /* Input system */
+  .input {
+    @apply w-full px-4 py-2.5 bg-white border rounded-lg text-sm transition-all duration-200 focus:outline-none;
+    border-color: #e8ebf3;
+    color: #1a1f36;
+  }
+  .input::placeholder {
+    color: #8d96b4;
+  }
+  .input:focus {
+    border-color: #c5a47e;
+    box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.15);
+  }
+
+  .input-label {
+    @apply block text-sm font-medium mb-1.5;
+    color: #272e47;
+  }
+
+  /* Table system */
+  .table-container {
+    @apply overflow-x-auto rounded-xl;
+    border: 1px solid #e8ebf3;
+  }
+
+  .table-header {
+    border-bottom: 1px solid #e8ebf3;
+    background-color: #f8f9fc;
+  }
+
+  .table-header th {
+    @apply px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider;
+    color: #4a5578;
+  }
+
+  .table-row {
+    @apply transition-colors duration-150;
+    border-bottom: 1px solid #f1f3f9;
+  }
+  .table-row:hover {
+    background-color: #f8f9fc;
+  }
+
+  .table-row td {
+    @apply px-6 py-4 text-sm;
+    color: #343d5c;
+  }
+
+  /* Badge system */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200;
+  }
+
+  .badge-warning {
+    @apply bg-amber-50 text-amber-700 ring-1 ring-amber-200;
+  }
+
+  .badge-danger {
+    @apply bg-red-50 text-red-700 ring-1 ring-red-200;
+  }
+
+  .badge-info {
+    @apply bg-blue-50 text-blue-700 ring-1 ring-blue-200;
+  }
+
+  .badge-neutral {
+    background-color: #f0f1f5;
+    color: #343d5c;
+    @apply ring-1;
+    --tw-ring-color: #d9dce6;
+  }
+
+  .badge-gold {
+    background-color: #fdf8f0;
+    color: #946e45;
+    @apply ring-1;
+    --tw-ring-color: #f2dab3;
+  }
+
+  /* Page header */
+  .page-header {
+    @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold tracking-tight;
+    color: #1a1f36;
+  }
+
+  .page-subtitle {
+    @apply text-sm mt-1;
+    color: #67739b;
+  }
+
+  /* Section label */
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-widest px-4 mb-2;
+    color: #8d96b4;
+  }
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer;
+  }
+
+  .nav-item-default {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .nav-item-default:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav-item-active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-left: 2px solid #c5a47e;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-800;
+  }
+
+  .bg-gradient-navy {
+    background: linear-gradient(135deg, #1a1f36 0%, #272e47 100%);
+  }
+
+  .bg-gradient-navy-dark {
+    background: linear-gradient(180deg, #111428 0%, #1a1f36 100%);
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(24px);
+  }
+}

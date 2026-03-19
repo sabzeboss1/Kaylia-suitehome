@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Debug</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #00ff00; }
+        .error { color: #ff0000; }
+        .success { color: #00ff00; }
+        .info { color: #00aaff; }
+        pre { background: #000; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Admin Panel Diagnostic</h1>
+    <div id="output"></div>
+    
+    <script type="module">
+        const output = document.getElementById('output');
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = message;
+            output.appendChild(div);
+        }
+        
+        log('<h2>1. Vérification de l\'environnement</h2>');
+        log(`✓ Page chargée à: ${new Date().toLocaleString()}`, 'success');
+        log(`✓ URL: ${window.location.href}`, 'success');
+        
+        log('<h2>2. Test de chargement des modules</h2>');
+        
+        try {
+            log('Tentative d\'import de Vue...', 'info');
+            const { createApp } = await import('vue');
+            log('✓ Vue importé avec succès', 'success');
+            
+            log('Tentative d\'import de Vue Router...', 'info');
+            const { createRouter } = await import('vue-router');
+            log('✓ Vue Router importé avec succès', 'success');
+            
+            log('Tentative d\'import de Pinia...', 'info');
+            const { createPinia } = await import('pinia');
+            log('✓ Pinia importé avec succès', 'success');
+            
+            log('Tentative d\'import de Axios...', 'info');
+            const axios = await import('axios');
+            log('✓ Axios importé avec succès', 'success');
+            
+            log('<h2>3. Test de l\'API Backend</h2>');
+            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+            log(`API URL configurée: ${apiUrl}`, 'info');
+            
+            try {
+                const response = await fetch(`${apiUrl}/api/apartments`);
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✓ API Backend accessible - ${data.data?.length || 0} appartements trouvés`, 'success');
+                } else {
+                    log(`⚠️ API Backend répond mais avec erreur: ${response.status}`, 'error');
+                }
+            } catch (e) {
+                log(`✗ API Backend inaccessible: ${e.message}`, 'error');
+            }
+            
+            log('<h2>4. Tentative de chargement de l\'application</h2>');
+            
+            try {
+                log('Import du fichier main.js...', 'info');
+                await import('/src/main.js');
+                log('✓ Application chargée avec succès!', 'success');
+                log('<p class="success">Si vous voyez ce message mais la page est toujours blanche, il y a une erreur dans un composant Vue.</p>');
+            } catch (e) {
+                log(`✗ ERREUR lors du chargement de l'application:`, 'error');
+                log(`<pre>${e.stack || e.message}</pre>`, 'error');
+                
+                log('<h2>💡 Solutions possibles:</h2>');
+                log('<ul><li>Vérifiez que tous les fichiers existent dans src/</li><li>Vérifiez la syntaxe des fichiers .vue et .js</li><li>Vérifiez que les imports sont corrects</li><li>Relancez npm install</li></ul>');
+            }
+            
+        } catch (e) {
+            log(`✗ ERREUR CRITIQUE:`, 'error');
+            log(`<pre>${e.stack || e.message}</pre>`, 'error');
+            
+            log('<h2>💡 Solutions:</h2>');
+            log('<ul><li>Vérifiez que node_modules existe</li><li>Lancez: npm install</li><li>Vérifiez que le serveur Vite est lancé: npm run dev</li></ul>');
+        }
+    </script>
+</body>
+</html>

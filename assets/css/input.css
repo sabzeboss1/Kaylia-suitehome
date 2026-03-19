@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles to complement Tailwind CSS */
+
+/* Hero background image placeholder */
+.hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23555" width="1200" height="600"/></svg>');
+}
+
+/* Apartment card image placeholder */
+.apartment-image {
+    background: linear-gradient(to bottom, #ddd 0%, #ccc 100%);
+}
+
+/* Spa section image placeholder */
+.spa-image {
+    background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), 
+                linear-gradient(135deg, #c9a86a 0%, #b8956a 100%);
+}
+
+/* Location map placeholder */
+.location-map {
+    background: #e5e5e5;
+    position: relative;
+}
+
+.location-map::after {
+    content: '📍';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+}
+
+/* Social grid image placeholders */
+.social-image {
+    background: linear-gradient(135deg, #444 0%, #666 100%);
+    aspect-ratio: 1;
+}
+
+/* Smooth transitions */
+a, button {
+    transition: all 0.3s ease;
+}
