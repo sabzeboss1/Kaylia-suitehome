@@ -1,0 +1,13 @@
+# Ignore everything by default, then whitelist what we need
+**
+
+# Allow the frontend source
+!frontend/
+!frontend/**
+
+# But exclude node_modules and dist from the build context
+frontend/node_modules/
+frontend/dist/
+
+# Allow nginx config
+!nginx.conf
