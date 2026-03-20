@@ -1,0 +1,13 @@
+{
+    "name": "kaylia-suite/root",
+    "description": "Root Heroku PHP deployment",
+    "require": {
+        "php": "^8.1",
+        "ext-pdo_mysql": "*"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "cd backend && composer install --no-dev --optimize-autoloader --no-interaction"
+        ]
+    }
+}

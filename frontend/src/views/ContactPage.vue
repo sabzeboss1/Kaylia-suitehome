@@ -1,8 +1,8 @@
 <template>
   <DefaultLayout>
     <!-- Contact Section -->
-    <section class="bg-[#cfc6b8] py-20 md:py-32">
-      <div class="container mx-auto px-6 md:px-20">
+    <section class="bg-[#cfc6b8] pt-[62px] md:pt-20 pb-12 md:pb-16">
+      <div class="container mx-auto px-6 md:px-20 pt-8 md:pt-12">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           <!-- Left Column - Contact Info -->
           <div class="text-gray-900">

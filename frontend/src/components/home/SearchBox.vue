@@ -250,20 +250,28 @@ const handleSearch = () => {
   .search-box-wrapper {
     flex-direction: column;
     border-radius: 12px;
+    max-width: 90%;
+    margin: 0 auto;
   }
   
   .search-divider {
-    width: auto;
-    height: 1px;
-    align-self: stretch;
+    display: none;
   }
   
   .search-zone {
     padding: 14px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .search-zone:last-of-type {
+    border-bottom: none;
   }
   
   .search-reserve-btn {
-    padding: 16px 24px;
+    padding: 18px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 0 0 12px 12px;
   }
 }
 </style>

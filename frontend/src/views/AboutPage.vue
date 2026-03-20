@@ -2,8 +2,8 @@
   <DefaultLayout>
     <div class="about-page">
       <!-- Hero Section -->
-      <section class="relative h-[50vh] md:h-[60vh] bg-cover bg-center flex items-center hero-section">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40"></div>
+      <section class="relative h-[55vh] md:h-[65vh] bg-cover bg-center flex items-center hero-section pt-[62px] md:pt-20">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/75 to-black/65"></div>
         <div class="container mx-auto px-6 md:px-20 relative z-10">
           <h1 class="text-white text-[40px] leading-tight font-bold max-w-4xl" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
             Notre <span class="italic">Histoire</span>

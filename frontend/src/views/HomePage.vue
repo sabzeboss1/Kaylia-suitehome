@@ -1,6 +1,6 @@
 <template>
   <DefaultLayout>
-    <div class="home-page">
+    <div class="w-full">
       <!-- Hero Section with Search Box -->
       <HeroSection>
         <template #search-box>
@@ -16,8 +16,8 @@
             <h2 class="text-[32px] leading-[24px] text-gray-800 mb-4" style="font-family: 'Poppins', sans-serif; font-weight: 600;">
               Nos <span class="italic text-[#0b6087]" style="font-family: 'Silver Garden', serif; font-weight: 700; font-style: italic; font-size: 32px; line-height: 24px;">Appartements</span>
             </h2>
-            <div class="flex justify-center">
-              <p class="text-[24px] leading-[24px] text-gray-700 whitespace-nowrap" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 300;">
+            <div class="flex justify-center px-4">
+              <p class="text-[16px] md:text-[24px] leading-[24px] text-gray-700 text-center" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 300;">
                 Découvrez nos appartements de standing conçus pour votre confort et votre bien-être.
               </p>
             </div>

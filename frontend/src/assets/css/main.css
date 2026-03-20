@@ -72,6 +72,22 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Cormorant Garamond', serif;
 }
 
+/* Fixed header compensation */
+/* Ensure all first sections in pages account for the fixed header */
+.hero-section,
+section:first-of-type {
+  /* Mobile: 62px header height */
+  padding-top: max(62px, var(--section-pt, 0));
+}
+
+@media (min-width: 768px) {
+  .hero-section,
+  section:first-of-type {
+    /* Desktop: ~80px header height */
+    padding-top: max(80px, var(--section-pt, 0));
+  }
+}
+
 /* Component styles */
 @utility btn-primary {
   background-color: #2d5a5f;

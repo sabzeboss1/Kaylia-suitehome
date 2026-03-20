@@ -1,18 +1,55 @@
 <template>
   <header 
     class="fixed top-0 left-0 right-0 z-50 text-white transition-all duration-300"
-    :class="shouldHaveDarkBackground ? 'bg-[#2c3e50] shadow-lg' : (isScrolled ? 'bg-[#2c3e50] shadow-lg' : 'bg-transparent')"
+    :class="shouldHaveDarkBackground ? 'bg-[#2c3e50] shadow-lg' : (isScrolled ? 'bg-[#1a2c3e]/90 backdrop-blur-sm shadow-lg' : 'bg-transparent')"
   >
-    <nav class="container mx-auto px-6 md:px-8 py-3 flex items-center justify-between">
+    <!-- ===== MOBILE HEADER (visible only on mobile) ===== -->
+    <div class="relative md:hidden flex items-center justify-between px-4 h-[62px] border-b border-white/40">
+      <!-- Left: Hamburger menu -->
+      <button 
+        class="z-10 min-w-[44px] min-h-[44px] flex items-center justify-center text-white"
+        @click="toggleMobileMenu"
+        aria-label="Ouvrir le menu"
+      >
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+          <line x1="3" y1="8" x2="21" y2="8"/>
+          <line x1="3" y1="14" x2="21" y2="14"/>
+          <line x1="3" y1="20" x2="21" y2="20"/>
+        </svg>
+      </button>
+
+      <!-- Center: Mobile Logo (absolute centered) -->
+      <router-link 
+        to="/" 
+        class="absolute inset-x-0 flex justify-center items-center pointer-events-auto"
+      >
+        <img 
+          src="/images/logomobile.png" 
+          alt="Kaylia Suite Home" 
+          class="h-11 w-auto object-contain drop-shadow-md"
+        />
+      </router-link>
+
+      <!-- Right: Réserver CTA button -->
+      <router-link 
+        to="/reserver" 
+        class="z-10 min-h-[40px] bg-[#0b6087] hover:bg-[#094d6b] active:bg-[#073d57] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center whitespace-nowrap shadow-sm"
+      >
+        Réserver
+      </router-link>
+    </div>
+
+    <!-- ===== DESKTOP HEADER (visible only on md+) ===== -->
+    <nav class="hidden md:flex container mx-auto px-8 py-3 items-center justify-between">
       <!-- Logo -->
       <div class="flex items-center">
         <router-link to="/" class="flex items-center">
-          <img src="/images/logo.png" alt="Kaylia Suite Home" class="h-12 md:h-14 w-auto object-contain" />
+          <img src="/images/logo.png" alt="Kaylia Suite Home" class="h-14 w-auto object-contain" />
         </router-link>
       </div>
 
       <!-- Navigation Menu (Desktop) -->
-      <ul class="hidden md:flex items-center space-x-6 lg:space-x-8 text-sm font-normal text-white">
+      <ul class="flex items-center space-x-6 lg:space-x-8 text-sm font-normal text-white">
         <li class="relative group">
           <button 
             @click="toggleApartmentsMenu"
@@ -118,24 +155,13 @@
           </div>
         </div>
 
-        <!-- CTA Button with proper touch target -->
+        <!-- CTA Button -->
         <router-link 
           to="/reserver" 
-          class="min-h-[44px] bg-[#0b6087] hover:bg-[#094d6b] text-white px-5 md:px-6 py-2 rounded text-sm font-normal transition flex items-center"
+          class="min-h-[44px] bg-[#0b6087] hover:bg-[#094d6b] text-white px-6 py-2 rounded text-sm font-normal transition flex items-center"
         >
           Réserver
         </router-link>
-        
-        <!-- Mobile Menu Toggle with proper touch target -->
-        <button 
-          class="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center text-white"
-          @click="toggleMobileMenu"
-          aria-label="Toggle mobile menu"
-        >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
       </div>
     </nav>
   </header>

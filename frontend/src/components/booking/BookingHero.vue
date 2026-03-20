@@ -1,6 +1,6 @@
 <template>
-  <section class="booking-hero bg-[#d2c8bc] py-20 md:py-24">
-    <div class="container mx-auto px-6 md:px-12 lg:px-20">
+  <section class="booking-hero bg-[#d2c8bc] pt-[62px] md:pt-20 pb-12 md:pb-16">
+    <div class="container mx-auto px-6 md:px-12 lg:px-20 pt-8 md:pt-4">
       <!-- 1. Progress Steps (Fil d'Ariane) -->
       <div class="flex items-center gap-8 md:gap-12 mb-8">
         <div

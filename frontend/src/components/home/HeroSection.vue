@@ -48,12 +48,14 @@
     <div class="container mx-auto px-6 md:px-20 flex flex-col h-full py-8 md:py-12 justify-center gap-12 md:gap-16 lg:gap-20 relative z-10">
       <!-- Title and text -->
       <div class="w-full">
-        <div class="max-w-[761px] animate-fade-in-up">
-          <h1 class="hero-title text-[40px] leading-[48px] mb-4 font-medium">
+        <div class="max-w-[761px] animate-fade-in-up text-center md:text-left">
+          <h1 class="hero-title text-[32px] md:text-[40px] leading-[40px] md:leading-[48px] mb-6 font-medium">
             KAYLIA SUITE HOME<br>
-            L'ART du Confort & du Luxe à Yaoundé
+            L'ART du Confort &<br class="md:hidden">
+            du Luxe à Yaoundé
           </h1>
-          <p class="hero-tagline text-[32px] md:text-[36px] leading-[48px] tracking-normal font-normal italic">
+          
+          <p class="hero-tagline text-[24px] md:text-[32px] lg:text-[36px] leading-[36px] md:leading-[48px] tracking-normal font-normal italic">
             {{ heroTagline || 'Vivez une expérience unique, mémorable et chaleureuse' }}
           </p>
         </div>

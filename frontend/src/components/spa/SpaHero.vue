@@ -1,6 +1,6 @@
 <template>
-  <section class="bg-[#d2c8bc] py-20 md:py-32">
-    <div class="container mx-auto px-6 md:px-12 lg:px-20">
+  <section class="bg-[#d2c8bc] pt-[62px] md:pt-20 pb-12 md:pb-16">
+    <div class="container mx-auto px-6 md:px-12 lg:px-20 pt-8 md:pt-12">
       <!-- Header Section -->
       <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-8 md:mb-12">
         <!-- Left: Title and Rating -->

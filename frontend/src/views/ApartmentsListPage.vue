@@ -3,7 +3,7 @@
     <div class="apartments-list-page bg-[#f9f9f9] min-h-screen">
       <!-- Hero Section with Search Box -->
       <section 
-        class="relative h-[35vh] md:h-[40vh] bg-cover bg-center flex items-center hero-section"
+        class="relative h-[55vh] md:h-[60vh] bg-cover bg-center flex items-center hero-section pt-[62px] md:pt-20"
       >
         <div class="container mx-auto px-6 md:px-20">
           <h1 class="text-white font-serif text-2xl md:text-4xl font-light leading-tight max-w-3xl">
@@ -33,8 +33,114 @@
           :key="apartment.id"
           class="mb-16 last:mb-0"
         >
-          <!-- Apartment Container - Full Width -->
-          <div class="w-full">
+          <!-- Mobile Layout -->
+          <div class="md:hidden bg-white rounded-2xl shadow-lg overflow-hidden">
+            <!-- Title -->
+            <div class="text-center py-4 px-6">
+              <h2 class="text-2xl font-semibold text-gray-900">
+                {{ apartment.name }}
+              </h2>
+            </div>
+
+            <!-- Image with Dots Navigation -->
+            <div class="relative bg-gray-100">
+              <img 
+                :src="getApartmentImages(apartment)[currentSlides[index] || 0]" 
+                :alt="`${apartment.name} - Image ${(currentSlides[index] || 0) + 1}`"
+                class="w-full h-[280px] object-cover"
+              />
+              
+              <!-- Navigation Arrows - bottom right -->
+              <div v-if="getApartmentImages(apartment).length > 1" class="absolute bottom-3 right-3 flex gap-2">
+                <button 
+                  @click="previousSlide(index)"
+                  class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition active:scale-95"
+                  aria-label="Image précédente"
+                >
+                  <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+                <button 
+                  @click="nextSlide(index)"
+                  class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition active:scale-95"
+                  aria-label="Image suivante"
+                >
+                  <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Dots Navigation -->
+            <div v-if="getApartmentImages(apartment).length > 1" class="flex justify-center gap-2 py-3 bg-gray-100">
+              <button
+                v-for="(img, idx) in getApartmentImages(apartment)"
+                :key="idx"
+                @click="currentSlides[index] = idx"
+                class="w-2 h-2 rounded-full transition-all"
+                :class="(currentSlides[index] || 0) === idx ? 'bg-gray-800 w-6' : 'bg-gray-300'"
+                :aria-label="`Image ${idx + 1}`"
+              ></button>
+            </div>
+
+            <!-- Features - Horizontal Line -->
+            <div class="flex justify-center items-center gap-4 py-4 px-4 border-b border-gray-200">
+              <!-- Capacity -->
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 border border-gray-300 rounded flex items-center justify-center flex-shrink-0">
+                  <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                  </svg>
+                </div>
+                <span class="text-xs text-gray-700">{{ apartment.capacity }} personnes</span>
+              </div>
+
+              <!-- Surface -->
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 border border-gray-300 rounded flex items-center justify-center flex-shrink-0">
+                  <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                  </svg>
+                </div>
+                <span class="text-xs text-gray-700">{{ apartment.surface }}m²</span>
+              </div>
+
+              <!-- Beds -->
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 border border-gray-300 rounded flex items-center justify-center flex-shrink-0">
+                  <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                  </svg>
+                </div>
+                <span class="text-xs text-gray-700">{{ getBedDescription(apartment) }}</span>
+              </div>
+
+              <!-- Floor -->
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 border border-gray-300 rounded flex items-center justify-center flex-shrink-0">
+                  <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                </div>
+                <span class="text-xs text-gray-700">{{ apartment.floor || '2er étage' }}</span>
+              </div>
+            </div>
+
+            <!-- Reserve Button -->
+            <div class="p-6">
+              <button 
+                @click="handleReserve(apartment)"
+                class="w-full bg-[#0b6087] hover:bg-[#094d6b] text-white font-medium px-6 py-3 rounded-lg transition-all duration-300 active:scale-95"
+              >
+                Réserver
+              </button>
+            </div>
+          </div>
+
+          <!-- Desktop Layout -->
+          <div class="hidden md:block w-full">
             <!-- Title Section -->
             <div class="text-center mb-8 px-6">
               <h2 class="font-serif text-3xl md:text-4xl text-gray-900 mb-2">
@@ -269,16 +375,24 @@ const getBedDescription = (apartment: Apartment) => {
   return '1 lit King Size'
 }
 
-// Carousel navigation - slide by 3 images
+// Carousel navigation
 const nextSlide = (apartmentIndex: number) => {
   const apartment = apartments.value[apartmentIndex]
   if (!apartment) return
   
   const images = getApartmentImages(apartment)
-  const maxSlides = Math.max(0, images.length - 3)
   
-  if (currentSlides.value[apartmentIndex] !== undefined && currentSlides.value[apartmentIndex] < maxSlides) {
-    currentSlides.value[apartmentIndex]++
+  // Pour mobile: navigation image par image
+  if (window.innerWidth < 768) {
+    if (currentSlides.value[apartmentIndex] !== undefined && currentSlides.value[apartmentIndex] < images.length - 1) {
+      currentSlides.value[apartmentIndex]++
+    }
+  } else {
+    // Pour desktop: slide par 3 images
+    const maxSlides = Math.max(0, images.length - 3)
+    if (currentSlides.value[apartmentIndex] !== undefined && currentSlides.value[apartmentIndex] < maxSlides) {
+      currentSlides.value[apartmentIndex]++
+    }
   }
 }
 
@@ -343,7 +457,7 @@ watch(apartments, (newApartments) => {
 
 <style scoped>
 .hero-section {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+  background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
                     url('/images/apartments/hero.jpg');
   background-size: cover;
   background-position: center;

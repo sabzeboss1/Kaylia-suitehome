@@ -1,7 +1,7 @@
 <template>
-  <section class="apartment-hero-section relative">
+  <section class="apartment-hero-section relative pt-[62px] md:pt-20">
     <!-- 1. Background Image with Title -->
-    <div class="hero-background relative h-[500px] md:h-[600px] pt-20 md:pt-24">
+    <div class="hero-background relative h-[500px] md:h-[600px]">
       <!-- Background Image -->
       <div class="absolute inset-0">
         <img
@@ -80,7 +80,7 @@
     </div>
 
     <!-- 4. Navigation Menu (Beige Background) - Sticky -->
-    <div class="navigation-menu bg-[#A8927A] py-4 sticky top-0 z-20 shadow-md">
+    <div class="navigation-menu bg-[#A8927A] py-4 sticky top-[62px] md:top-20 z-20 shadow-md">
       <div class="container mx-auto px-6 md:px-12 lg:px-20">
         <nav class="flex flex-wrap gap-6 md:gap-8">
           <a

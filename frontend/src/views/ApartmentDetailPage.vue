@@ -3,7 +3,7 @@
     <div class="apartment-detail-page">
     <!-- Hero Section with Building Image -->
     <section 
-      class="relative h-[40vh] md:h-[50vh] bg-cover bg-center flex items-center hero-section"
+      class="relative h-[40vh] md:h-[50vh] bg-cover bg-center flex items-center hero-section pt-[62px] md:pt-20"
     >
       <div class="container mx-auto px-6 md:px-20">
         <h1 class="text-white font-serif text-3xl md:text-5xl font-light leading-tight max-w-3xl">

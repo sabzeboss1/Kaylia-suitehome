@@ -39,6 +39,8 @@ frontend/dist/
 **/README*.md
 **/readme.md
 **/IDENTIFIANTS.md
+GIT_PUSH_GUIDE.md
+HEADER_MOBILE_FIX.md
 
 # Test/debug html files in admin
 admin/check-errors.html

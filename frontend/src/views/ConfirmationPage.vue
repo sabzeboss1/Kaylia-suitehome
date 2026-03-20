@@ -1,8 +1,8 @@
 <template>
   <DefaultLayout>
     <!-- Confirmation Page -->
-    <section class="bg-[#c9b5a0] py-12 md:py-20 min-h-[60vh]">
-      <div class="container mx-auto px-6 md:px-20 max-w-4xl">
+    <section class="bg-[#c9b5a0] pt-[62px] md:pt-20 pb-12 md:pb-16 min-h-[60vh]">
+      <div class="container mx-auto px-6 md:px-20 max-w-4xl pt-8 md:pt-0">
         <!-- Progress Steps -->
         <div class="mb-12">
           <ProgressSteps :current-step="3" />
