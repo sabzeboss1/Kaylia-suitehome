@@ -8,7 +8,7 @@ COPY frontend/ ./frontend/
 
 # Install dependencies and build the Vue.js app
 WORKDIR /app/frontend
-RUN npm ci
+RUN npm install
 RUN npm run build
 
 # ─── Stage 2: Runtime ─────────────────────────────────────────────────────────
