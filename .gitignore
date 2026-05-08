@@ -33,32 +33,57 @@ build/
 admin/dist/
 frontend/dist/
 
-# All uppercase documentation/analysis .md and .txt files (at any depth)
-**/[A-Z][A-Z]*.md
-**/[A-Z][A-Z]*.txt
-**/README*.md
-**/readme.md
-**/IDENTIFIANTS.md
-GIT_PUSH_GUIDE.md
-HEADER_MOBILE_FIX.md
+# Documentation files (all .md and .txt except essential ones)
+*.md
+*.txt
+!README.md
+!backend/README.md
+!frontend/README.md
+!admin/README.md
 
-# Test/debug html files in admin
-admin/check-errors.html
-
-# Test files
+# Test files (all test files)
 test-*.php
 test-*.html
 test-*.ps1
 test-*.sh
+**/test-*.php
+**/test-*.html
+
+# Scripts (PowerShell, Bash, Batch)
+*.ps1
+*.sh
+*.bat
+
+# Debug/diagnostic files
+check-*.php
+check-*.html
+diagnostic*.php
+diagnose*.php
+setup-*.php
+init-*.php
+create-*.php
+export-*.php
+clean-*.php
+update-*.php
+**/check-*.php
+**/diagnostic*.php
 
 # Old/backup files
 indexold.php
+*.old
+*.backup
+*.bak
 
-# Scripts (not needed in repo)
-fix-images-system.ps1
-restart-admin.ps1
-START_ADMIN.bat
-START_BACKEND.bat
+# SQL dumps
+*.sql
+
+# ZIP archives
+*.zip
+
+# Test/debug html files
+admin/check-errors.html
+**/test.html
+**/test-*.html
 
 # Package lock (root level - not a real project root)
 package-lock.json

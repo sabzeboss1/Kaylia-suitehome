@@ -78,14 +78,14 @@ require_once __DIR__ . '/../config/config.php';
                         </svg>
                     </button>
                 </div>
-                <a href="reserver.php" class="bg-[#107c96] hover:bg-[#0d6278] text-white px-6 py-2.5 rounded text-sm font-medium transition">
+                <a href="reserver.php" class="bg-[#0B6087] hover:bg-[#094d6b] text-white px-6 py-2.5 rounded text-sm font-medium transition">
                     Réserver
                 </a>
             </div>
 
             <!-- Mobile CTA & Menu Toggle -->
             <div class="lg:hidden flex items-center space-x-3">
-                <a href="reserver.php" class="bg-[#107c96] hover:bg-[#0d6278] text-white px-4 py-2 rounded text-sm font-medium transition">
+                <a href="reserver.php" class="bg-[#0B6087] hover:bg-[#094d6b] text-white px-4 py-2 rounded text-sm font-medium transition">
                     Réserver
                 </a>
                 <button class="mobile-menu-toggle">
