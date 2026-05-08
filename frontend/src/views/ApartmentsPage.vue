@@ -4,11 +4,19 @@
       <!-- Hero Section -->
       <ApartmentHero :images="heroCarouselImages" />
 
+      <!-- Image Carousel Section - Random images from gallery -->
+      <ImageCarousel 
+        v-if="carouselImages.length > 0"
+        :images="carouselImages"
+        :show-controls="true"
+        bg-class="bg-white"
+      />
+
       <!-- Filter Section -->
       <ApartmentFilter :search-results="results" :search-params="searchParams" />
 
       <!-- Apartments Listing -->
-      <div id="appartements" class="max-w-7xl mx-auto px-6 py-16">
+      <div id="appartements" class="container-aligned py-16">
         <!-- Loading State -->
         <div v-if="loading" class="flex justify-center items-center py-20">
           <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-teal-600"></div>
@@ -56,26 +64,31 @@
       <EquipmentSection />
 
       <!-- Services Section -->
-      <section id="services" class="bg-[#22333b] text-white py-12 md:py-20 px-6 md:px-20">
+      <section class="bg-[#22333b] text-white py-12 md:py-20 full-width-aligned">
         <div class="text-center mb-12 md:mb-16">
-          <h2 class="font-serif text-4xl md:text-5xl font-light mb-4">
-            Nos <span class="italic">Services</span>
+          <h2 class="text-[32px] leading-[24px] font-semibold text-white mb-4" style="font-family: 'Poppins', sans-serif; font-weight: 600;">
+            Nos <span class="italic" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">Services</span>
           </h2>
-          <p class="text-base text-gray-300 font-light tracking-wide max-w-3xl mx-auto">
-            Profitez d'un séjour sans compromis avec nos services premium conçus pour votre confort.
+          <p class="text-base leading-6 md:text-[24px] md:leading-[24px] text-gray-300 mx-auto max-w-xs md:max-w-none md:whitespace-nowrap" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400; letter-spacing: 0;">
+            Profitez d'un séjour sans compromis avec nos services premium conçu pour votre confort.
           </p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 max-w-4xl mx-auto">
-          <div v-for="service in servicesList" :key="service.name" class="text-center">
-            <div class="w-20 h-20 bg-white rounded-full mx-auto mb-4 flex items-center justify-center p-4">
+        <div class="grid grid-cols-3 gap-6 md:gap-12 max-w-4xl mx-auto">
+          <div 
+            v-for="service in servicesList" 
+            :key="service.name"
+            class="text-center"
+          >
+            <div class="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full mx-auto mb-3 md:mb-4 flex items-center justify-center p-4 md:p-5">
               <img 
                 :src="service.icon" 
                 :alt="service.name"
-                class="w-full h-full object-contain"
+                class="w-8 h-8 md:w-10 md:h-10 object-contain"
               />
             </div>
-            <h3 class="text-sm font-medium">{{ service.name }}</h3>
+            <h3 class="text-[8px] leading-[100%] md:text-[16px] md:leading-[100%] font-semibold" style="font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 0;">{{ service.name }}</h3>
+            <div class="w-12 h-[2px] bg-[#A8927D] mx-auto mt-6"></div>
           </div>
         </div>
       </section>
@@ -101,7 +114,7 @@
       </div>
 
       <!-- Newsletter Section -->
-      <NewsletterSection />
+      <ApartmentsNewsletter />
     </div>
   </DefaultLayout>
 </template>
@@ -115,8 +128,9 @@ import ApartmentFilter from '@/components/apartments/ApartmentFilter.vue'
 import ApartmentListItem from '@/components/apartments/ApartmentListItem.vue'
 import ApartmentGallery from '@/components/apartments/ApartmentGallery.vue'
 import ApartmentFAQ from '@/components/apartments/ApartmentFAQ.vue'
-import NewsletterSection from '@/components/home/NewsletterSection.vue'
+import ApartmentsNewsletter from '@/components/apartments/ApartmentsNewsletter.vue'
 import EquipmentSection from '@/components/common/EquipmentSection.vue'
+import ImageCarousel from '@/components/common/ImageCarousel.vue'
 import { useApartmentSearch } from '@/composables/useApartmentSearch'
 import type { SearchParams } from '@/composables/useApartmentSearch'
 
@@ -210,6 +224,37 @@ const heroCarouselImages = computed(() => {
   return shuffled.slice(0, 8)
 })
 
+// Carousel images - random selection from all apartment images
+const carouselImages = computed(() => {
+  if (!results.value?.apartments || results.value.apartments.length === 0) {
+    return []
+  }
+
+  const images: Array<{ url: string; alt: string }> = []
+  const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+  
+  // Collecter toutes les images de tous les appartements
+  for (const apartment of results.value.apartments) {
+    if (apartment.images && apartment.images.length > 0) {
+      for (const image of apartment.images) {
+        const imageUrl = image.url || image.image_url
+        const fullUrl = imageUrl.startsWith('http') ? imageUrl : `${backendUrl}${imageUrl}`
+        
+        images.push({
+          url: fullUrl,
+          alt: `${apartment.name} - ${image.title || 'Photo'}`
+        })
+      }
+    }
+  }
+
+  // Mélanger les images de manière aléatoire
+  const shuffled = images.sort(() => Math.random() - 0.5)
+  
+  // Retourner 10-12 images pour le carrousel
+  return shuffled.slice(0, 12)
+})
+
 // Total photos count
 const totalPhotosCount = computed(() => {
   if (!results.value?.apartments) return 0
@@ -227,12 +272,12 @@ const performSearch = async () => {
 
 // Services list
 const servicesList = ref([
-  { name: 'Wi-Fi haut débit', icon: '/images/équipements/Wifi.ico' },
-  { name: 'Sécurité 24/7', icon: '/images/équipements/Sécurité.ico' },
-  { name: 'SPA & Bien-être', icon: '/images/équipements/SPA.ico' },
-  { name: 'Conciergerie', icon: '/images/équipements/Conciergerie.ico' },
-  { name: 'Cuisine Équipée', icon: '/images/équipements/Cuisine équipée.ico' },
-  { name: 'Climatisation', icon: '/images/équipements/Climatisation.ico' }
+  { name: 'Wi-Fi haut débit', icon: '/images/equipements/Wifi.ico' },
+  { name: 'Sécurité 24/7', icon: '/images/equipements/Sécurité.ico' },
+  { name: 'SPA & Bien-être', icon: '/images/equipements/SPA.ico' },
+  { name: 'Conciergerie', icon: '/images/equipements/Conciergerie.ico' },
+  { name: 'Cuisine Équipée', icon: '/images/equipements/Cuisine équipée.ico' },
+  { name: 'Climatisation', icon: '/images/equipements/Climatisation.ico' }
 ])
 
 // Watch for query param changes

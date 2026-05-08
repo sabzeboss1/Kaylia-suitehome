@@ -1,12 +1,12 @@
 <template>
-  <section class="bg-[#f2f4f3] py-16 md:py-20 px-6 md:px-12 text-center">
+  <section class="bg-[#f5f5f5] py-16 md:py-20 full-width-aligned text-center">
     <div class="max-w-4xl mx-auto">
       <!-- Header -->
-      <h2 class="text-[32px] leading-[24px] font-semibold text-gray-900 mb-4" style="font-family: 'Poppins', sans-serif; font-weight: 600;">
-        Inscrivez-vous à notre <span class="italic" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">newsletter</span> et recevez nos codes promos
+      <h2 class="text-[32px] leading-[32px] font-semibold text-gray-900 mb-4" style="font-family: 'Poppins', sans-serif; font-weight: 600;">
+        Inscrivez-vous à notre <span style="color: #0B6087;">newsletter</span> et recevez nos codes promos
       </h2>
       
-      <p class="text-[16px] leading-[24px] font-light text-gray-700 mb-10" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 300;">
+      <p class="text-[24px] leading-[24px] font-light text-gray-700 mb-10" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 300;">
         Recevez des offres exclusives et restez informé de nos actualités.
       </p>
       
@@ -19,24 +19,28 @@
             type="email" 
             placeholder="Votre adresse email" 
             required
-            class="flex-1 px-5 py-3.5 bg-white border-2 border-[#0b6087] rounded text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#094d6b] transition-colors"
+            class="flex-1 px-5 py-3.5 bg-white border border-gray-300 rounded text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#0B6087] transition-colors"
           >
           <button 
             type="submit"
             :disabled="loading || !consent"
-            class="bg-[#0b6087] hover:bg-[#094d6b] text-white px-8 py-3.5 rounded text-base font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+            :class="[
+              'px-8 py-3.5 rounded text-base font-medium transition-all whitespace-nowrap text-white',
+              loading ? 'bg-[#6B9FB0] cursor-wait' : 'bg-[#0B6087] hover:bg-[#094d6b]',
+              !consent && !loading ? 'opacity-50 cursor-not-allowed' : ''
+            ]"
           >
             {{ loading ? 'Envoi...' : "S'inscrire" }}
           </button>
         </div>
 
         <!-- Line 2: Consent Checkbox -->
-        <div class="flex items-start justify-center gap-3 text-left">
+        <div class="flex items-start justify-center gap-3 text-left max-w-2xl mx-auto">
           <input 
             v-model="consent"
             type="checkbox" 
             id="newsletter-consent" 
-            class="mt-1 w-4 h-4 flex-shrink-0 border border-gray-700 rounded cursor-pointer accent-[#0b6087]"
+            class="mt-1 w-4 h-4 flex-shrink-0 border border-gray-700 rounded cursor-pointer accent-[#0B6087]"
           >
           <label 
             for="newsletter-consent" 
@@ -87,7 +91,10 @@ const handleSubmit = async () => {
   errorMessage.value = ''
 
   try {
-    await subscribe({ email: email.value })
+    await subscribe({ 
+      email: email.value,
+      consent: consent.value
+    })
     successMessage.value = 'Merci pour votre inscription ! Vous recevrez bientôt nos offres exclusives.'
     email.value = ''
     consent.value = false

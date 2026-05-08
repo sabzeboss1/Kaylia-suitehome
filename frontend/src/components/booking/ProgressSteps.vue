@@ -1,10 +1,9 @@
 <template>
-  <div class="flex items-center justify-center gap-8 md:gap-16 py-6">
+  <div class="flex items-center justify-center gap-8 md:gap-16 py-6 pt-20 md:pt-24">
     <div
       v-for="(step, index) in steps"
       :key="index"
       class="flex flex-col items-center gap-3 cursor-pointer group transition-opacity hover:opacity-80"
-      :class="{ 'opacity-50': currentStep < index + 1 }"
     >
       <!-- Icon -->
       <div class="w-12 h-12 flex items-center justify-center">
@@ -33,9 +32,9 @@ interface Props {
   currentStep: 1 | 2 | 3
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
-// Simple SVG icons as components
+// Icônes SVG minimalistes filaires
 const TagIcon = () => h('svg', {
   fill: 'none',
   stroke: 'currentColor',

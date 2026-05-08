@@ -1,19 +1,19 @@
 <template>
-  <section class="booking-hero bg-[#d2c8bc] pt-[62px] md:pt-20 pb-12 md:pb-16">
-    <div class="container mx-auto px-6 md:px-12 lg:px-20 pt-8 md:pt-4">
+  <section class="booking-hero bg-[#d2c8bc] pb-8 md:pb-16 overflow-x-hidden" style="padding-top: 100px !important;">
+    <div class="container mx-auto px-4 md:px-16 lg:px-20 max-w-full">
       <!-- 1. Progress Steps (Fil d'Ariane) -->
-      <div class="flex items-center gap-8 md:gap-12 mb-8">
+      <div class="flex items-center gap-4 md:gap-12 mb-6 md:mb-8">
         <div
           v-for="(step, index) in steps"
           :key="index"
-          class="flex items-center gap-3"
+          class="flex items-center gap-2 md:gap-3"
           :class="{ 'opacity-40': currentStep < index + 1 }"
         >
           <!-- Icon -->
-          <div class="w-10 h-10 flex items-center justify-center flex-shrink-0">
+          <div class="w-7 h-7 md:w-10 md:h-10 flex items-center justify-center flex-shrink-0">
             <svg
               v-if="step.id === 'tarif'"
-              class="w-10 h-10 text-gray-900"
+              class="w-7 h-7 md:w-10 md:h-10 text-gray-900"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -27,7 +27,7 @@
             </svg>
             <svg
               v-else-if="step.id === 'recap'"
-              class="w-10 h-10 text-gray-900"
+              class="w-7 h-7 md:w-10 md:h-10 text-gray-900"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -41,7 +41,7 @@
             </svg>
             <svg
               v-else
-              class="w-10 h-10 text-gray-900"
+              class="w-7 h-7 md:w-10 md:h-10 text-gray-900"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -55,7 +55,7 @@
             </svg>
           </div>
           <!-- Label -->
-          <span class="text-base font-medium text-gray-900">
+          <span class="text-xs md:text-base font-medium text-gray-900">
             {{ step.label }}
           </span>
         </div>
@@ -64,11 +64,11 @@
     </div>
 
     <!-- 2. Image Carousel - Full Width -->
-    <div class="relative mb-8">
+    <div class="relative mb-6 md:mb-8 overflow-x-hidden">
       <!-- Carousel Container - Full Width -->
-      <div class="flex items-center overflow-hidden">
+      <div class="flex items-center justify-center overflow-hidden max-w-full gap-3 md:gap-6">
         <!-- Left Image (Partially visible with fade) -->
-        <div class="hidden lg:block w-1/4 relative flex-shrink-0 pr-3">
+        <div class="hidden lg:block w-1/4 relative flex-shrink-0">
           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#d2c8bc] z-10 pointer-events-none"></div>
           <img
             :src="images[getPrevIndex()]"
@@ -77,80 +77,79 @@
           />
         </div>
 
-        <!-- Center Images (2 visible) -->
-        <div class="flex gap-6 w-full lg:w-1/2 flex-shrink-0">
-          <div class="w-1/2">
-            <img
-              :src="images[currentIndex]"
-              :alt="`Image ${currentIndex + 1}`"
-              class="w-full h-80 md:h-96 object-cover rounded-xl"
-            />
-          </div>
-          <div class="w-1/2">
-            <img
-              :src="images[getNextIndex()]"
-              :alt="`Image ${getNextIndex() + 1}`"
-              class="w-full h-80 md:h-96 object-cover rounded-xl"
-            />
-          </div>
+        <!-- Center Image (Main - Single large image) -->
+        <div class="w-full lg:w-1/2 flex-shrink-0">
+          <img
+            :src="images[currentIndex]"
+            :alt="`Image ${currentIndex + 1}`"
+            class="w-full h-48 md:h-80 lg:h-96 object-cover rounded-xl"
+          />
         </div>
 
         <!-- Right Image (Partially visible with fade) -->
-        <div class="hidden lg:block w-1/4 relative flex-shrink-0 pl-3">
+        <div class="hidden lg:block w-1/4 relative flex-shrink-0">
           <div class="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#d2c8bc] z-10 pointer-events-none"></div>
           <img
-            :src="images[getNextNextIndex()]"
-            :alt="`Image ${getNextNextIndex() + 1}`"
+            :src="images[getNextIndex()]"
+            :alt="`Image ${getNextIndex() + 1}`"
             class="w-full h-64 object-cover rounded-xl opacity-60"
           />
         </div>
       </div>
     </div>
 
-    <div class="container mx-auto px-6 md:px-12 lg:px-20">
+    <div class="container mx-auto px-4 md:px-12 lg:px-20 max-w-full">
 
       <!-- 3. Info Bar with Features and Controls -->
-      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6 overflow-x-hidden">
         <!-- Left: Apartment Features -->
-        <div class="flex flex-wrap justify-center md:justify-start gap-6 md:gap-8">
+        <div class="grid grid-cols-2 md:flex md:flex-wrap justify-center md:justify-start gap-3 md:gap-8 w-full md:w-auto">
           <!-- Capacity -->
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 border border-gray-800 rounded flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-              </svg>
+          <div class="flex items-center gap-2 md:gap-3">
+            <div class="w-8 h-8 md:w-10 md:h-10 border border-gray-800 rounded flex items-center justify-center flex-shrink-0">
+              <img 
+                :src="`${backendUrl}/images/equipements/Personne.ico`" 
+                alt="Capacité" 
+                class="w-4 h-4 md:w-5 md:h-5 object-contain"
+              />
             </div>
-            <span class="text-sm text-gray-900">{{ capacity }} personnes</span>
+            <span class="text-xs md:text-sm text-gray-900">{{ capacity }} pers.</span>
           </div>
 
           <!-- Surface -->
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 border border-gray-800 rounded flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
-              </svg>
+          <div class="flex items-center gap-2 md:gap-3">
+            <div class="w-8 h-8 md:w-10 md:h-10 border border-gray-800 rounded flex items-center justify-center flex-shrink-0">
+              <img 
+                :src="`${backendUrl}/images/equipements/Maison.ico`" 
+                alt="Surface" 
+                class="w-4 h-4 md:w-5 md:h-5 object-contain"
+              />
             </div>
-            <span class="text-sm text-gray-900">{{ surface }}m²</span>
+            <span class="text-xs md:text-sm text-gray-900">{{ surface }}m²</span>
           </div>
 
           <!-- Beds -->
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 border border-gray-800 rounded flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-              </svg>
+          <div class="flex items-center gap-2 md:gap-3">
+            <div class="w-8 h-8 md:w-10 md:h-10 border border-gray-800 rounded flex items-center justify-center flex-shrink-0">
+              <img 
+                :src="`${backendUrl}/images/equipements/Group 1779.ico`" 
+                alt="Lits" 
+                class="w-4 h-4 md:w-5 md:h-5 object-contain"
+              />
             </div>
-            <span class="text-sm text-gray-900">{{ bedsText }}</span>
+            <span class="text-xs md:text-sm text-gray-900">{{ bedsText }}</span>
           </div>
 
           <!-- Floor -->
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 border border-gray-800 rounded flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-              </svg>
+          <div class="flex items-center gap-2 md:gap-3">
+            <div class="w-8 h-8 md:w-10 md:h-10 border border-gray-800 rounded flex items-center justify-center flex-shrink-0">
+              <img 
+                :src="`${backendUrl}/images/equipements/Etage.ico`" 
+                alt="Étage" 
+                class="w-4 h-4 md:w-5 md:h-5 object-contain"
+              />
             </div>
-            <span class="text-sm text-gray-900">{{ floor }}</span>
+            <span class="text-xs md:text-sm text-gray-900">{{ floor }}</span>
           </div>
         </div>
 
@@ -158,19 +157,19 @@
         <div class="flex gap-3 flex-shrink-0">
           <button
             @click="prevSlide"
-            class="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors"
+            class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors"
             aria-label="Image précédente"
           >
-            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
           </button>
           <button
             @click="nextSlide"
-            class="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors"
+            class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors"
             aria-label="Image suivante"
           >
-            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
           </button>
@@ -193,6 +192,9 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+// Backend URL for icons
+const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 const steps = [
   { id: 'tarif', label: 'Tarif' },
@@ -226,9 +228,5 @@ function getNextIndex(): number {
 
 function getPrevIndex(): number {
   return (currentIndex.value - 1 + props.images.length) % props.images.length
-}
-
-function getNextNextIndex(): number {
-  return (currentIndex.value + 2) % props.images.length
 }
 </script>

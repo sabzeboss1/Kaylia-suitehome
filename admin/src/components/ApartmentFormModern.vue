@@ -610,7 +610,7 @@
         <!-- Tab: Equipment -->
         <div v-show="currentTab === 'equipment'" class="p-8">
           <div class="mb-6">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">🛋️ Équipements & Commodités</h3>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">🛋️ équipements & Commodités</h3>
             <p class="text-gray-600 text-sm">Sélectionnez tous les équipements disponibles dans l'appartement</p>
           </div>
 
@@ -797,7 +797,7 @@ const tabs = [
   { id: 'images', label: 'Images' },
   { id: 'video', label: 'Vidéo' },
   { id: 'location', label: 'Localisation' },
-  { id: 'equipment', label: 'Équipements' },
+  { id: 'equipment', label: 'équipements' },
   { id: 'seo', label: 'SEO' }
 ]
 

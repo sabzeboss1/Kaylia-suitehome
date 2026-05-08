@@ -1,6 +1,6 @@
 <template>
-  <section class="bg-white py-16 md:py-24">
-    <div class="container mx-auto px-6 md:px-12 lg:px-20">
+  <section class="section-aligned bg-white py-16 md:py-24">
+    <div class="section-content">
       <!-- Two Column Layout with Flexbox -->
       <div class="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 lg:gap-16">
         
@@ -18,7 +18,7 @@
         <div class="w-full md:w-1/2">
           <!-- Title -->
           <h2 class="text-[32px] leading-[24px] font-semibold text-gray-900 mb-6" style="font-family: 'Poppins', sans-serif; font-weight: 600;">
-            Le SPA & <span class="italic" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">Bien-être</span>
+            Le SPA & Bien-être 
           </h2>
           
           <!-- Description -->
@@ -47,12 +47,14 @@
           </ul>
 
           <!-- CTA Button -->
-          <button 
-            @click="navigateToSpa"
-            class="bg-[#a68f7b] hover:bg-[#96806c] text-white px-8 py-3.5 rounded text-base font-medium transition-colors duration-300 mt-4"
-          >
-            Découvrir le SPA
-          </button>
+          <div class="flex justify-center md:justify-start">
+            <button 
+              @click="navigateToSpa"
+              class="w-full md:w-auto bg-[#a68f7b] hover:bg-[#96806c] text-white px-8 py-3.5 rounded text-base font-medium transition-colors duration-300 mt-4"
+            >
+              Découvrir le SPA
+            </button>
+          </div>
         </div>
       </div>
     </div>

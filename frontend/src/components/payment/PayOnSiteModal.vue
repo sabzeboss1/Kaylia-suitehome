@@ -111,12 +111,12 @@
               </div>
 
               <!-- Info Box -->
-              <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div class="bg-[#A8927D]/10 border border-[#A8927D]/30 rounded-lg p-4">
                 <div class="flex gap-3">
-                  <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-[#0B6087] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
-                  <div class="text-sm text-blue-800">
+                  <div class="text-sm text-gray-800">
                     <p class="font-medium mb-1">Paiement à l'arrivée</p>
                     <p>Vous recevrez un email de confirmation. Le paiement complet sera effectué lors de votre arrivée à l'établissement.</p>
                   </div>

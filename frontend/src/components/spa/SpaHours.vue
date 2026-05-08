@@ -1,17 +1,36 @@
 <template>
-  <div class="bg-[#e8dcc8] rounded-xl shadow-lg p-8 w-full">
-    <h3 class="text-xl font-semibold text-gray-900 mb-8">Horaires d'ouverture</h3>
+  <div class="bg-[#e8dcc8] rounded-xl shadow-lg p-6 md:p-8 w-full">
+    <!-- Title -->
+    <h3 
+      class="text-gray-900 mb-6 md:mb-8"
+      style="font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 24px; line-height: 24px; letter-spacing: 0px;"
+    >
+      Horaires d'ouverture
+    </h3>
+    
+    <!-- Hours List -->
     <div class="space-y-0">
       <div 
         v-for="(day, index) in openingHours" 
         :key="day.dayOfWeek"
         :class="[
-          'flex justify-between items-center py-3.5',
+          'flex justify-between items-center py-2.5 md:py-3.5',
           index < openingHours.length - 1 ? 'border-b border-gray-300' : ''
         ]"
       >
-        <span class="text-gray-800 font-medium">{{ day.dayOfWeek }}</span>
-        <span class="text-gray-800">
+        <!-- Day Name -->
+        <span 
+          class="text-gray-800"
+          style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 500; font-size: 16px; line-height: 24px; letter-spacing: 0px;"
+        >
+          {{ day.dayOfWeek }}
+        </span>
+        
+        <!-- Hours -->
+        <span 
+          class="text-gray-800"
+          style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 500; font-size: 16px; line-height: 24px; letter-spacing: 0px;"
+        >
           {{ day.isClosed ? 'Fermé' : `${day.openTime} - ${day.closeTime}` }}
         </span>
       </div>

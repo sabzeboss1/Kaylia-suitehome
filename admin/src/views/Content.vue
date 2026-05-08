@@ -404,6 +404,7 @@ const mediaUrls = ref({})
 const availablePages = ref([
   { slug: 'home', name: 'Accueil', description: 'Page principale' },
   { slug: 'apartments', name: 'Appartements', description: 'Liste des appartements' },
+  { slug: 'studio', name: 'Studio', description: 'Page Studio' },
   { slug: 'spa', name: 'SPA', description: 'Services SPA' },
   { slug: 'contact', name: 'Contact', description: 'Page contact' },
   { slug: 'about', name: 'À propos', description: 'Page à propos' },
@@ -467,6 +468,14 @@ const saveChanges = async () => {
       .map(s => {
         let val = editedSections.value[s.section_key]
         if (s.content_type === 'json' && typeof val === 'string') { try { val = JSON.parse(val) } catch (e) {} }
+        
+        // Debug logging
+        console.log('Saving section:', s.section_key, {
+          content_type: s.content_type,
+          content_value: val,
+          content_value_type: typeof val
+        })
+        
         return axios.put(`/content/${selectedPage.value}/${s.section_key}`, { content_value: val, content_type: s.content_type, language: selectedLanguage.value })
       })
     await Promise.all(savePromises)
@@ -475,7 +484,11 @@ const saveChanges = async () => {
     successMessage.value = 'Contenu sauvegardé !'
     setTimeout(() => { successMessage.value = '' }, 3000)
   } catch (error) {
-    errorMessage.value = error.response?.data?.error?.message || 'Échec de la sauvegarde'
+    console.error('Save error:', error.response?.data)
+    errorMessage.value = error.response?.data?.error?.message || error.message || 'Échec de la sauvegarde'
+    if (error.response?.data?.error?.details) {
+      console.error('Validation details:', error.response.data.error.details)
+    }
   } finally { saving.value = false }
 }
 
@@ -497,7 +510,8 @@ const validateSection = (section) => {
   if (section.required && !val) return 'Ce champ est requis'
   if (section.content_type === 'json' && val && typeof val === 'string') { try { JSON.parse(val) } catch (e) { return 'JSON invalide' } }
   if (section.content_type === 'number' && val && isNaN(val)) return 'Nombre invalide'
-  if (section.content_type === 'image_url' && val && !val.match(/^(https?:\/\/|\/)/)) return 'URL ou chemin invalide'
+  // Accept URLs (http/https), absolute paths (/...), and relative paths (images/...)
+  if (section.content_type === 'image_url' && val && !val.match(/^(https?:\/\/|\/|[a-zA-Z0-9])/)) return 'URL ou chemin invalide'
   return null
 }
 
@@ -520,11 +534,24 @@ const openMediaLibrary = async (k) => { currentImageSection.value = k; showMedia
 const closeMediaLibrary = () => { showMediaLibrary.value = false; currentImageSection.value = '' }
 const loadMediaFiles = async () => {
   loadingMedia.value = true
-  try { const r = await axios.get('/api/media', { params: { per_page: 50 } }); mediaFiles.value = r.data.data }
+  try { const r = await axios.get('/media', { params: { per_page: 50 } }); mediaFiles.value = r.data.data }
   catch (e) { console.error('Error loading media:', e) }
   finally { loadingMedia.value = false }
 }
-const selectMedia = (media) => { if (currentImageSection.value) editedSections.value[currentImageSection.value] = media.file_path; closeMediaLibrary() }
+const selectMedia = (media) => { 
+  if (currentImageSection.value) {
+    const section = sections.value.find(s => s.section_key === currentImageSection.value)
+    if (section && section.content_type === 'media_choice') {
+      // For media_choice, update the mediaUrls and call updateMediaChoice
+      mediaUrls.value[currentImageSection.value] = media.file_path
+      updateMediaChoice(currentImageSection.value)
+    } else {
+      // For regular image_url, just set the path
+      editedSections.value[currentImageSection.value] = media.file_path
+    }
+  }
+  closeMediaLibrary() 
+}
 const getMediaThumbnail = (media) => getImageUrl(media.thumbnail_600 || media.file_path)
 
 const uploadImage = (k) => { currentImageSection.value = k; imageUploadInput.value?.click() }
@@ -532,8 +559,18 @@ const handleImageUpload = async (event) => {
   const file = event.target.files[0]; if (!file) return
   const formData = new FormData(); formData.append('file', file); formData.append('entity_type', 'content'); formData.append('entity_id', 0)
   try {
-    const r = await axios.post('/api/media', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
-    if (currentImageSection.value) editedSections.value[currentImageSection.value] = r.data.data.file_path
+    const r = await axios.post('/media', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+    if (currentImageSection.value) {
+      const section = sections.value.find(s => s.section_key === currentImageSection.value)
+      if (section && section.content_type === 'media_choice') {
+        // For media_choice, update the mediaUrls and call updateMediaChoice
+        mediaUrls.value[currentImageSection.value] = r.data.data.file_path
+        updateMediaChoice(currentImageSection.value)
+      } else {
+        // For regular image_url, just set the path
+        editedSections.value[currentImageSection.value] = r.data.data.file_path
+      }
+    }
     successMessage.value = 'Image uploadée !'; setTimeout(() => { successMessage.value = '' }, 3000)
   } catch (e) { errorMessage.value = e.response?.data?.error?.message || 'Échec de l\'upload' }
   event.target.value = ''
@@ -544,7 +581,7 @@ const handleVideoUpload = async (event) => {
   const file = event.target.files[0]; if (!file) return
   const formData = new FormData(); formData.append('file', file); formData.append('entity_type', 'content'); formData.append('entity_id', 0)
   try {
-    const r = await axios.post('/api/media', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+    const r = await axios.post('/media', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     if (currentImageSection.value) {
       const filePath = r.data.data.file_path
       const fullUrl = import.meta.env.VITE_API_BASE_URL.replace('/api', '') + '/storage/' + filePath

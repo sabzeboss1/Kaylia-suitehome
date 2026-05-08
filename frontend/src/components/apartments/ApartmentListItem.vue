@@ -2,9 +2,10 @@
   <div class="apartment-card bg-white rounded-2xl shadow-lg overflow-hidden animate-fade-in-up" :class="staggerClass">
     <!-- Mobile Layout -->
     <div class="md:hidden">
-      <!-- Image with Logo KAYLIA and Navigation -->
+      <!-- Image with Logo KAYLIA -->
       <div class="relative bg-gray-100">
         <LazyImage
+          :key="`mobile-${currentImageIndex}`"
           :src="currentImage"
           :srcset="`${currentImage}?w=600 600w, ${currentImage}?w=1200 1200w`"
           :alt="apartment.name"
@@ -18,21 +19,22 @@
               <div class="text-[10px] tracking-widest opacity-90">SUITE HOME</div>
             </div>
             
-            <!-- Navigation Arrows - bottom right -->
-            <div v-if="apartment.images && apartment.images.length > 1" class="absolute bottom-3 right-3 flex gap-2">
+            <!-- Navigation Arrows (Mobile) - Grouped Bottom Right -->
+            <div v-if="hasMultipleImages" class="absolute bottom-4 right-4 flex items-center gap-2 z-10">
               <button 
                 @click.stop="previousImage"
-                class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition active:scale-95"
-                aria-label="Previous image"
+                class="w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 nav-arrow"
+                aria-label="Image précédente"
               >
                 <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
               </button>
+              
               <button 
                 @click.stop="nextImage"
-                class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition active:scale-95"
-                aria-label="Next image"
+                class="w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 nav-arrow"
+                aria-label="Image suivante"
               >
                 <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -122,6 +124,7 @@
       <!-- Image Gallery -->
       <div class="md:col-span-2 relative image-container bg-gray-100">
         <LazyImage
+          :key="`desktop-${currentImageIndex}`"
           :src="currentImage"
           :srcset="`${currentImage}?w=600 600w, ${currentImage}?w=1200 1200w`"
           :alt="apartment.name"
@@ -135,31 +138,32 @@
               <div class="text-xs tracking-widest opacity-90">LUXURY LIVING</div>
             </div>
             
-            <!-- Image counter - top right -->
-            <div v-if="apartment.images && apartment.images.length > 1" class="absolute top-4 right-4 bg-black bg-opacity-60 text-white text-xs px-3 py-1 rounded-full">
-              {{ currentImageIndex + 1 }} / {{ apartment.images.length }}
-            </div>
-            
-            <!-- Navigation Arrows - bottom right, side by side -->
-            <div v-if="apartment.images && apartment.images.length > 1" class="absolute bottom-4 right-4 flex gap-2">
+            <!-- Navigation Arrows (Desktop) - Grouped Bottom Right -->
+            <div v-if="hasMultipleImages" class="absolute bottom-4 right-4 flex items-center gap-3 z-10">
               <button 
                 @click.stop="previousImage"
-                class="nav-arrow min-w-[44px] min-h-[44px] w-11 h-11 bg-white bg-opacity-80 rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-100 transition active:scale-95"
-                aria-label="Previous image"
+                class="w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 nav-arrow"
+                aria-label="Image précédente"
               >
                 <svg class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
               </button>
+              
               <button 
                 @click.stop="nextImage"
-                class="nav-arrow min-w-[44px] min-h-[44px] w-11 h-11 bg-white bg-opacity-80 rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-100 transition active:scale-95"
-                aria-label="Next image"
+                class="w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 nav-arrow"
+                aria-label="Image suivante"
               >
                 <svg class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
               </button>
+              
+              <!-- Image Counter -->
+              <div class="bg-black/60 text-white px-3 py-1 rounded-full text-sm font-medium">
+                {{ currentImageIndex + 1 }} / {{ imageCount }}
+              </div>
             </div>
           </template>
         </LazyImage>
@@ -255,16 +259,6 @@ const bookingStore = useBookingStore()
 // Image carousel state
 const currentImageIndex = ref(0)
 
-// Computed properties
-const currentImage = computed(() => {
-  if (props.apartment.images && props.apartment.images.length > 0) {
-    const image = props.apartment.images[currentImageIndex.value]
-    return getImageUrl(image)
-  }
-  // Fallback placeholder image
-  return '/images/apartments/apart5.jpg'
-})
-
 // Helper pour obtenir l'URL de l'image
 const getImageUrl = (image: any): string => {
   if (!image) {
@@ -289,6 +283,26 @@ const getImageUrl = (image: any): string => {
   
   return url
 }
+
+// Computed properties
+const currentImage = computed(() => {
+  if (props.apartment.images && props.apartment.images.length > 0) {
+    // S'assurer que l'index est dans les limites
+    const index = currentImageIndex.value % props.apartment.images.length
+    const image = props.apartment.images[index]
+    return getImageUrl(image)
+  }
+  // Fallback placeholder image
+  return '/images/apartments/apart5.jpg'
+})
+
+const hasMultipleImages = computed(() => {
+  return props.apartment.images && props.apartment.images.length > 1
+})
+
+const imageCount = computed(() => {
+  return props.apartment.images?.length || 0
+})
 
 const bedsDescription = computed(() => {
   if (props.apartment.beds && props.apartment.beds.length > 0) {
@@ -321,10 +335,9 @@ const nextImage = () => {
 
 const previousImage = () => {
   if (props.apartment.images && props.apartment.images.length > 0) {
-    currentImageIndex.value = 
-      currentImageIndex.value === 0 
-        ? props.apartment.images.length - 1 
-        : currentImageIndex.value - 1
+    currentImageIndex.value = currentImageIndex.value === 0 
+      ? props.apartment.images.length - 1 
+      : currentImageIndex.value - 1
   }
 }
 

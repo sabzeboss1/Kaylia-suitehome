@@ -22,16 +22,25 @@
             @click="toggleFAQ(index)"
             class="w-full flex items-center justify-between py-5 text-left hover:text-primary-blue transition"
           >
-            <span class="text-lg text-gray-900 font-normal pr-8">{{ faq.question }}</span>
+            <span class="text-lg text-gray-900 font-medium pr-8">{{ faq.question }}</span>
             <div class="flex-shrink-0 w-10 h-10 bg-primary-blue rounded-full flex items-center justify-center text-white">
               <svg 
-                class="w-5 h-5 transition-transform duration-300" 
-                :class="{ 'rotate-45': openIndex === index }"
+                class="w-5 h-5 transition-all duration-300" 
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                <!-- Ligne horizontale (toujours visible) -->
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                <!-- Ligne verticale (disparaît quand ouvert = devient -) -->
+                <path 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  stroke-width="2" 
+                  d="M12 4v16"
+                  :class="{ 'opacity-0 scale-0': openIndex === index }"
+                  class="transition-all duration-300 origin-center"
+                />
               </svg>
             </div>
           </button>

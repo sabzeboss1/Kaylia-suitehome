@@ -1,25 +1,26 @@
 <template>
-  <section class="bg-[#a8927d] text-white py-16 md:py-20 px-6 md:px-12 text-center">
-    <div class="max-w-6xl mx-auto">
+  <section class="bg-[#a8927d] text-white py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-3 md:px-8">
       <!-- Header -->
-      <h2 class="text-3xl md:text-4xl mb-4">
+      <h2 class="text-3xl md:text-4xl mb-4 text-center">
         <span class="font-bold text-white">Réservez</span>  
-        <span class="font-serif italic text-[#0b6087]"> sur notre site</span>
+        <span class="font-serif italic text-gray-900"> sur notre site</span>
       </h2>
       
-      <p class="text-base md:text-lg font-light mb-12 text-white max-w-3xl mx-auto leading-relaxed">
+      <p class="text-base leading-6 font-light mb-12 text-white max-w-3xl mx-auto text-center" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 300; letter-spacing: 0;">
         Réservez directement sur le site Kaylia Suite Home pour profiter d'avantages exclusifs lors de votre séjour dans notre appart'hôtel
       </p>
 
-      <!-- Benefits Grid - Horizontal Layout -->
-      <div class="flex flex-wrap justify-center gap-8 md:gap-12 mb-12 max-w-5xl mx-auto">
+      <!-- Benefits Grid - 3 columns on mobile, horizontal on desktop -->
+      <div class="grid grid-cols-3 gap-4 md:flex md:flex-wrap md:justify-between md:gap-y-8 mb-12">
         <div 
-          v-for="benefit in benefits" 
+          v-for="(benefit, index) in benefits" 
           :key="benefit.name"
-          class="flex flex-col items-center w-32 md:w-36"
+          class="flex flex-col items-center gap-4 md:gap-3"
+          :class="{ 'col-start-1': index === 3, 'col-start-2': index === 4 }"
         >
           <!-- Icon Circle -->
-          <div class="w-16 h-16 md:w-20 md:h-20 bg-[#2c3e50] rounded-full flex items-center justify-center mb-3 shadow-lg p-3.5 md:p-4">
+          <div class="w-12 h-12 md:w-20 md:h-20 bg-[#2c3e50] rounded-full flex items-center justify-center shadow-lg p-2.5 md:p-4">
             <img 
               :src="benefit.icon" 
               :alt="benefit.name"
@@ -28,26 +29,25 @@
           </div>
           
           <!-- Benefit Title -->
-          <h3 class="text-xs md:text-sm font-bold text-white mb-2 text-center leading-tight">
+          <h3 class="text-[8px] leading-[12px] md:text-base md:leading-none font-semibold text-white text-center" style="font-family: Poppins; letter-spacing: 0%;">
             {{ benefit.name }}
           </h3>
-          
-          <!-- Separator Line -->
-          <div class="w-10 h-0.5 bg-[#2c3e50]"></div>
         </div>
       </div>
 
       <!-- Footer CTA -->
-      <p class="text-base md:text-lg font-light mb-8 text-white italic leading-relaxed">
+      <p class="text-base font-normal mb-8 text-white text-center leading-none max-w-xl mx-auto" style="font-family: Ruluko; letter-spacing: 0%;">
         Vivez une expérience unique et authentique en réservant maintenant pour des souvenirs mémorables
       </p>
 
-      <button 
-        @click="navigateToBooking"
-        class="bg-[#0b6087] hover:bg-[#094d6b] text-white px-12 py-3.5 rounded text-base font-normal transition-colors duration-300"
-      >
-        Réserver
-      </button>
+      <div class="flex justify-center">
+        <button 
+          @click="navigateToBooking"
+          class="bg-[#0b6087] hover:bg-[#094d6b] text-white px-12 py-3.5 rounded text-base font-normal transition-colors duration-300"
+        >
+          Réserver
+        </button>
+      </div>
     </div>
   </section>
 </template>
@@ -66,7 +66,11 @@ const benefits = [
 ]
 
 const navigateToBooking = () => {
-  router.push({ name: 'apartments' })
+  // Scroll to the top of the page where the search filter is located
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
 }
 </script>
 

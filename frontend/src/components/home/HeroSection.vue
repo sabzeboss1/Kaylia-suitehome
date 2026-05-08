@@ -1,5 +1,5 @@
 <template>
-  <section class="hero relative h-[85vh] flex flex-col text-white overflow-hidden">
+  <section class="hero relative h-[100vh] flex flex-col text-white overflow-hidden pt-[62px] md:pt-20">
     <!-- Video Background -->
     <div v-if="heroMedia?.type === 'video'" class="absolute inset-0 z-0">
       <!-- YouTube -->
@@ -39,29 +39,27 @@
 
     <!-- Image Background (default or fallback) -->
     <div 
-      v-else 
+      v-if="!heroMedia || heroMedia.type === 'image'"
       class="absolute inset-0 z-0 bg-cover bg-center"
       :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${getImageUrl()})` }"
     ></div>
 
     <!-- Content (always on top) -->
-    <div class="container mx-auto px-6 md:px-20 flex flex-col h-full py-8 md:py-12 justify-center gap-12 md:gap-16 lg:gap-20 relative z-10">
-      <!-- Title and text -->
-      <div class="w-full">
-        <div class="max-w-[761px] animate-fade-in-up text-center md:text-left">
-          <h1 class="hero-title text-[32px] md:text-[40px] leading-[40px] md:leading-[48px] mb-6 font-medium">
-            KAYLIA SUITE HOME<br>
-            L'ART du Confort &<br class="md:hidden">
-            du Luxe à Yaoundé
-          </h1>
-          
-          <p class="hero-tagline text-[24px] md:text-[32px] lg:text-[36px] leading-[36px] md:leading-[48px] tracking-normal font-normal italic">
-            {{ heroTagline || 'Vivez une expérience unique, mémorable et chaleureuse' }}
-          </p>
-        </div>
+    <div class="flex flex-col h-full py-8 md:py-12 justify-center gap-12 md:gap-16 relative z-10">
+      <!-- Title and text block - aligned with logo on desktop, centered on mobile -->
+      <div class="max-w-7xl mx-auto px-3 md:px-8 w-full text-center md:text-left">
+        <h1 class="hero-title text-[24px] leading-[32px] md:text-[40px] md:leading-[48px] mb-6 font-medium animate-fade-in-up">
+          KAYLIA SUITE HOME<br>
+          L'ART du Confort &<br class="md:hidden">
+          du Luxe à Yaoundé
+        </h1>
+        
+        <p class="hero-tagline text-[16px] leading-[24px] md:text-[32px] lg:text-[36px] md:leading-[48px] tracking-normal font-normal italic animate-fade-in-up">
+          {{ heroTagline || 'Vivez une expérience unique, mémorable et chaleureuse' }}
+        </p>
       </div>
       
-      <!-- Search box -->
+      <!-- Search box - centered -->
       <div class="w-full flex justify-center relative z-50">
         <slot name="search-box"></slot>
       </div>
@@ -100,12 +98,25 @@ const getVimeoEmbed = (url: string) => {
 
 const getImageUrl = () => {
   if (heroMedia.value?.type === 'image' && heroMedia.value.url) {
-    if (heroMedia.value.url.startsWith('http')) {
-      return heroMedia.value.url
+    const url = heroMedia.value.url
+    
+    // If URL starts with http, use it directly
+    if (url.startsWith('http')) {
+      return url
     }
-    // Remove leading slash if present to avoid double slash
-    const cleanUrl = heroMedia.value.url.startsWith('/') ? heroMedia.value.url.substring(1) : heroMedia.value.url
-    return `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/storage/${cleanUrl}`
+    
+    // If URL starts with 'images/', it's in the public folder (default image)
+    if (url.startsWith('images/')) {
+      const finalUrl = `/${url}`
+      console.log('🎯 Public folder image detected:', url, '→', finalUrl)
+      return finalUrl
+    }
+    
+    // Otherwise, it's an uploaded image in storage
+    const cleanUrl = url.startsWith('/') ? url.substring(1) : url
+    const finalUrl = `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/storage/${cleanUrl}`
+    console.log('🎯 Storage image detected:', url, '→', finalUrl)
+    return finalUrl
   }
   return defaultImage
 }
@@ -114,19 +125,21 @@ onMounted(async () => {
   try {
     // Load hero content
     const response = await axios.get('/content/home')
-    const content = response.data.data
+    const content = response.data?.data || response.data
     
     // Parse hero background (media_choice)
-    if (content.hero_background) {
-      heroMedia.value = typeof content.hero_background === 'string' 
+    if (content?.hero_background) {
+      const parsed = typeof content.hero_background === 'string' 
         ? JSON.parse(content.hero_background) 
         : content.hero_background
+      
+      heroMedia.value = parsed
     }
     
     // Load text content
-    heroTitle.value = content.hero_title || ''
-    heroSubtitle.value = content.hero_subtitle || ''
-    heroTagline.value = content.hero_tagline || ''
+    heroTitle.value = content?.hero_title || ''
+    heroSubtitle.value = content?.hero_subtitle || ''
+    heroTagline.value = content?.hero_tagline || ''
   } catch (error) {
     console.error('Failed to load hero content:', error)
     // Use defaults

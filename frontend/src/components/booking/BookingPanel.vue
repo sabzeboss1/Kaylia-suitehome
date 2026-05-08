@@ -187,14 +187,31 @@
       <h3 class="text-base font-semibold text-gray-800 mb-4">Résumé</h3>
       
       <div class="space-y-3 mb-4">
-        <div class="flex justify-between items-baseline">
-          <div>
-            <span class="text-2xl font-bold text-gray-800">{{ formatPrice(pricePerNight) }}</span>
-            <span class="text-sm text-gray-600">/nuit</span>
-          </div>
-          <span class="text-xl font-bold text-gray-800">{{ formatPrice(totalPrice) }}</span>
+        <!-- Prix de l'appartement -->
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-gray-700">{{ formatPrice(pricePerNight) }} × {{ nightCount }} nuit{{ nightCount > 1 ? 's' : '' }}</span>
+          <span class="font-semibold text-gray-800">{{ formatPrice(pricePerNight * nightCount) }}</span>
         </div>
-        <div class="text-sm text-gray-600">{{ nightCount }} nuits</div>
+        
+        <!-- Options supplémentaires -->
+        <div v-if="optionsTotal > 0" class="flex justify-between items-center text-sm">
+          <span class="text-gray-700">Options supplémentaires</span>
+          <span class="font-semibold text-gray-800">{{ formatPrice(optionsTotal) }}</span>
+        </div>
+        
+        <!-- Réduction code promo -->
+        <div v-if="promoDiscount > 0" class="flex justify-between items-center text-sm">
+          <span class="text-green-700">Réduction code promo</span>
+          <span class="font-semibold text-green-700">-{{ formatPrice(promoDiscount) }}</span>
+        </div>
+        
+        <!-- Ligne de séparation -->
+        <div class="border-t border-gray-300 pt-3">
+          <div class="flex justify-between items-baseline">
+            <span class="text-base font-semibold text-gray-800">Total</span>
+            <span class="text-2xl font-bold text-gray-800">{{ formatPrice(totalPrice) }}</span>
+          </div>
+        </div>
       </div>
 
       <!-- Code promo -->
@@ -204,16 +221,23 @@
           <input
             type="text"
             v-model="promoCodeInput"
-            class="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#1c5d78] transition"
+            class="flex-1 max-w-[60%] px-2 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#1c5d78] transition h-10"
             placeholder="Entrez votre code"
           />
           <button
             @click="applyPromoCode"
-            class="px-4 py-2 bg-[#1c5d78] text-white rounded-lg text-sm font-medium hover:bg-[#154a5f] transition"
+            class="flex-1 h-10 bg-[#1c5d78] text-white rounded-lg text-sm font-medium hover:bg-[#154a5f] transition whitespace-nowrap flex items-center justify-center"
           >
             Appliquer
           </button>
         </div>
+        
+        <!-- Message de succès/erreur -->
+        <Transition name="fade">
+          <div v-if="promoMessage" class="text-sm p-2 rounded-lg" :class="promoMessageType === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'">
+            {{ promoMessage }}
+          </div>
+        </Transition>
       </div>
 
       <!-- Suivant button -->
@@ -259,11 +283,17 @@ interface Props {
   wineOptions?: AddOn[]
   rates: Rate[]
   basePrice: number
+  promoMessage?: string
+  promoMessageType?: 'success' | 'error'
+  promoDiscount?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   comfortOptions: () => [],
-  wineOptions: () => []
+  wineOptions: () => [],
+  promoMessage: '',
+  promoMessageType: 'success',
+  promoDiscount: 0
 })
 
 const emit = defineEmits<{
@@ -316,8 +346,14 @@ const optionsTotal = computed(() => {
   }, 0)
 })
 
+const promoDiscount = computed(() => {
+  // Get discount from parent prop if available
+  return props.promoDiscount || 0
+})
+
 const totalPrice = computed(() => {
-  return pricePerNight.value * nightCount.value + optionsTotal.value
+  const subtotal = pricePerNight.value * nightCount.value + optionsTotal.value
+  return Math.max(0, subtotal - promoDiscount.value)
 })
 
 function formatDate(date: Date): string {
@@ -398,3 +434,16 @@ watch(() => props.checkOut, (newCheckOut) => {
   tempCheckOut.value = newCheckOut
 })
 </script>
+
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

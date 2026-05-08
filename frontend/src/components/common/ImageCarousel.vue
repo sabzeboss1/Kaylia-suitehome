@@ -9,39 +9,40 @@
         <div
           v-for="(image, index) in images"
           :key="index"
-          class="flex-shrink-0 w-[280px] md:w-[350px] lg:w-[400px] snap-center"
+          class="flex-shrink-0 w-[85vw] md:w-[calc(33.333%-16px)] snap-center"
         >
           <img
             :src="image.url || image"
             :alt="image.alt || `Image ${index + 1}`"
-            class="w-full h-[200px] md:h-[250px] object-cover rounded-xl shadow-lg"
+            class="w-full h-[300px] md:h-[400px] object-cover rounded-xl shadow-lg"
           />
         </div>
       </div>
     </div>
 
-    <!-- Navigation Buttons (Optional) -->
-    <div v-if="showControls" class="absolute top-1/2 left-0 right-0 -translate-y-1/2 pointer-events-none">
-      <div class="container mx-auto px-6 md:px-12 lg:px-20 flex justify-between">
-        <button
-          @click="scrollCarousel('left')"
-          class="w-12 h-12 bg-white border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors pointer-events-auto shadow-lg"
-          aria-label="Image précédente"
-        >
-          <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-          </svg>
-        </button>
-        <button
-          @click="scrollCarousel('right')"
-          class="w-12 h-12 bg-white border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors pointer-events-auto shadow-lg"
-          aria-label="Image suivante"
-        >
-          <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
-      </div>
+    <!-- Navigation Buttons (Optional) - Positioned in corners, vertically centered -->
+    <div v-if="showControls">
+      <!-- Left Arrow - Left side, vertically centered -->
+      <button
+        @click="scrollCarousel('left')"
+        class="absolute top-1/2 -translate-y-1/2 left-4 md:left-6 w-12 h-12 bg-white border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors shadow-lg z-10"
+        aria-label="Image précédente"
+      >
+        <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      
+      <!-- Right Arrow - Right side, vertically centered -->
+      <button
+        @click="scrollCarousel('right')"
+        class="absolute top-1/2 -translate-y-1/2 right-4 md:right-6 w-12 h-12 bg-white border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors shadow-lg z-10"
+        aria-label="Image suivante"
+      >
+        <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
     </div>
   </div>
 </template>
@@ -61,7 +62,7 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  bgClass: 'bg-[#A8927A]',
+  bgClass: 'bg-[#D2C8BC]',
   showControls: false
 })
 

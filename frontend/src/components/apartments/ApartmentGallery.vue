@@ -229,22 +229,40 @@ const closeModals = () => {
 .gallery-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #333;
+}
+
+@media (min-width: 768px) {
+  .gallery-container {
+    padding: 0 2rem;
+  }
 }
 
 /* Header */
 .gallery-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .gallery-header {
+    margin-bottom: 2.5rem;
+  }
 }
 
 .gallery-title {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
   color: #000;
   margin: 0 0 8px 0;
+}
+
+@media (min-width: 768px) {
+  .gallery-title {
+    font-size: 32px;
+  }
 }
 
 .gallery-title-accent {
@@ -254,26 +272,49 @@ const closeModals = () => {
 }
 
 .gallery-subtitle {
-  font-size: 16px;
+  font-size: 14px;
   color: #666;
   margin: 0;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .gallery-subtitle {
+    font-size: 32px;
+    padding: 0;
+  }
 }
 
 /* Grid Layout */
 .gallery-grid {
   display: grid;
-  grid-template-columns: 2.2fr 1fr;
+  grid-template-columns: 1fr;
   gap: 12px;
   align-items: start;
+}
+
+@media (min-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: 2fr 1fr;
+    gap: 42px;
+  }
 }
 
 /* Main Image */
 .gallery-main-image {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 12px;
-  height: 100%;
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .gallery-main-image {
+    aspect-ratio: 4 / 3;
+    height: 600px;
+  }
 }
 
 .gallery-image {
@@ -286,15 +327,23 @@ const closeModals = () => {
 /* Navigation Buttons */
 .gallery-nav-buttons {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 12px;
+  right: 12px;
   display: flex;
-  gap: 12px;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .gallery-nav-buttons {
+    bottom: 20px;
+    right: 20px;
+    gap: 12px;
+  }
 }
 
 .gallery-nav-btn {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   background-color: white;
   border: none;
   border-radius: 50%;
@@ -306,6 +355,13 @@ const closeModals = () => {
   transition: all 0.3s ease;
 }
 
+@media (min-width: 768px) {
+  .gallery-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 .gallery-nav-btn:hover {
   background-color: #f5f5f5;
   transform: scale(1.05);
@@ -313,21 +369,37 @@ const closeModals = () => {
 
 /* Thumbnails Column */
 .gallery-thumbnails {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  height: 0;
-  min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  .gallery-thumbnails {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1fr;
+    gap: 12px;
+    height: 600px;
+  }
 }
 
 .gallery-thumbnail {
   position: relative;
-  flex: 1;
-  min-height: 0;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
   aspect-ratio: 1 / 1;
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .gallery-thumbnail {
+    aspect-ratio: auto;
+    height: 100%;
+    border-radius: 12px;
+  }
 }
 
 .gallery-thumbnail-overlay:hover .gallery-image {
@@ -359,35 +431,38 @@ const closeModals = () => {
 }
 
 .gallery-overlay-text {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   margin: 0;
+}
+
+@media (min-width: 768px) {
+  .gallery-overlay-text {
+    font-size: 18px;
+  }
 }
 
 .gallery-overlay-number {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   margin: 0;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .gallery-grid {
-    grid-template-columns: 1fr;
+@media (min-width: 768px) {
+  .gallery-overlay-number {
+    font-size: 18px;
   }
-  
-  .gallery-main-image {
-    aspect-ratio: 16 / 9;
-  }
-  
-  .gallery-thumbnails {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-  
-  .gallery-thumbnail {
-    aspect-ratio: 1;
+}
+
+.gallery-overlay-content svg {
+  width: 32px;
+  height: 32px;
+}
+
+@media (min-width: 768px) {
+  .gallery-overlay-content svg {
+    width: 48px;
+    height: 48px;
   }
 }
 

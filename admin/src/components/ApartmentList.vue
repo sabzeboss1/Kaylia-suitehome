@@ -173,10 +173,10 @@
               <td>
                 <span
                   class="badge"
-                  :class="apartment.is_available ? 'badge-success' : 'badge-danger'"
+                  :class="apartment.available ? 'badge-success' : 'badge-danger'"
                 >
-                  <span class="w-1.5 h-1.5 rounded-full" :class="apartment.is_available ? 'bg-emerald-500' : 'bg-red-500'"></span>
-                  {{ apartment.is_available ? 'Disponible' : 'Indisponible' }}
+                  <span class="w-1.5 h-1.5 rounded-full" :class="apartment.available ? 'bg-emerald-500' : 'bg-red-500'"></span>
+                  {{ apartment.available ? 'Disponible' : 'Indisponible' }}
                 </span>
               </td>
               <td class="text-right">

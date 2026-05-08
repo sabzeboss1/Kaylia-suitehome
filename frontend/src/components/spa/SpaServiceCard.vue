@@ -1,16 +1,36 @@
 <template>
-  <div class="border-2 border-gray-800 rounded-lg p-6">
-    <h3 class="text-xl font-semibold text-gray-900 mb-3">
+  <div class="border-2 border-gray-800 rounded-lg p-4 md:p-6">
+    <!-- Titre du service -->
+    <h3 
+      class="text-gray-900 mb-2 md:mb-3"
+      style="font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 24px; line-height: 24px; letter-spacing: 0px;"
+    >
       {{ service.name }}
     </h3>
-    <p v-if="service.subtitle" class="text-sm text-gray-600 italic mb-3">
+    
+    <!-- Sous-titre (optionnel) -->
+    <p 
+      v-if="service.subtitle" 
+      class="text-gray-600 italic mb-2 md:mb-3"
+      style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400; font-size: 14px; line-height: 20px;"
+    >
       {{ service.subtitle }}
     </p>
-    <p class="text-sm text-gray-700 mb-4 leading-relaxed">
+    
+    <!-- Description du service -->
+    <p 
+      class="text-gray-700 mb-3 md:mb-4"
+      style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0px;"
+    >
       {{ service.description }}
     </p>
+    
+    <!-- Prix -->
     <div class="flex items-center justify-end">
-      <span class="text-2xl font-bold text-gray-900">
+      <span 
+        class="text-gray-900"
+        style="font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 24px; line-height: 24px; letter-spacing: 0px;"
+      >
         {{ formatPrice(service.price) }}
       </span>
     </div>

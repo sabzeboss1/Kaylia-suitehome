@@ -47,7 +47,7 @@
     </section>
 
     <!-- Equipment Section -->
-    <EquipmentSection section-id="equipements" />
+    <EquipmentSection section-id="équipements" />
 
     <!-- Services Section -->
     <section class="bg-[#1e3a3f] text-white py-12 md:py-20 px-6 md:px-20">
@@ -60,20 +60,20 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 max-w-4xl mx-auto">
+      <div class="grid grid-cols-3 gap-6 md:gap-12 max-w-4xl mx-auto">
         <div 
           v-for="(service, index) in services" 
           :key="index"
           class="text-center"
         >
-          <div class="w-20 h-20 bg-white rounded-full mx-auto mb-4 flex items-center justify-center p-4">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center p-3 sm:p-4">
             <img 
               :src="service.icon" 
               :alt="service.name"
               class="w-full h-full object-contain"
             />
           </div>
-          <h3 class="text-sm font-medium">{{ service.name }}</h3>
+          <h3 class="text-xs sm:text-sm font-medium">{{ service.name }}</h3>
         </div>
       </div>
     </section>
@@ -110,8 +110,10 @@ import ReservationBanner from '@/components/home/ReservationBanner.vue'
 import NewsletterSection from '@/components/home/NewsletterSection.vue'
 import BookingReservationModal from '@/components/booking/BookingReservationModal.vue'
 import apiClient from '@/utils/api'
+import { useSEO } from '@/composables/useSEO'
 
 const route = useRoute()
+const { setMetaTags, setStructuredData, getApartmentSchema, getBreadcrumbSchema } = useSEO()
 
 // Apartment images for carousel
 const apartmentImages = ref<string[]>([])
@@ -178,12 +180,12 @@ const faqItems = ref([
 
 // Services
 const services = ref([
-  { name: 'Wi-Fi haut débit', icon: '/images/équipements/Wifi.ico' },
-  { name: 'Sécurité 24/7', icon: '/images/équipements/Sécurité.ico' },
-  { name: 'SPA & Bien-être', icon: '/images/équipements/SPA.ico' },
-  { name: 'Conciergerie', icon: '/images/équipements/Conciergerie.ico' },
-  { name: 'Cuisine Équipée', icon: '/images/équipements/Cuisine équipée.ico' },
-  { name: 'Climatisation', icon: '/images/équipements/Climatisation.ico' }
+  { name: 'Wi-Fi haut débit', icon: '/images/equipements/Wifi.ico' },
+  { name: 'Sécurité 24/7', icon: '/images/equipements/Sécurité.ico' },
+  { name: 'SPA & Bien-être', icon: '/images/equipements/SPA.ico' },
+  { name: 'Conciergerie', icon: '/images/equipements/Conciergerie.ico' },
+  { name: 'Cuisine Équipée', icon: '/images/equipements/Cuisine équipée.ico' },
+  { name: 'Climatisation', icon: '/images/equipements/Climatisation.ico' }
 ])
 
 // Reservation modal handlers
@@ -229,6 +231,38 @@ onMounted(async () => {
       description: apartment.description,
       videoUrl: apartment.videoUrl
     }
+
+    // SEO Meta Tags - UTILISER LES DONNÉES DU BACKEND
+    const firstImage = apartment.images?.[0]
+    const imageUrl = firstImage ? 
+      (typeof firstImage === 'string' ? firstImage : 
+        (firstImage.image_url?.startsWith('http') ? firstImage.image_url : 
+          `http://localhost:8000${firstImage.image_url}`)) : 
+      undefined
+
+    // Utiliser les champs SEO du backend si disponibles, sinon générer automatiquement
+    const seoTitle = apartment.metaTitle || `${apartment.name} - Appartement de Luxe à Yaoundé | Kaylia Suite Home`
+    const seoDescription = apartment.metaDescription || apartment.description || `Réservez ${apartment.name}, un appartement de ${apartment.surface}m² pouvant accueillir ${apartment.capacity} personnes. Équipé, climatisé avec services premium à Yaoundé.`
+    const seoKeywords = apartment.metaKeywords || `${apartment.name}, appartement ${apartment.surface}m² Yaoundé, location ${apartment.capacity} personnes Yaoundé`
+    const seoImage = apartment.ogImage || imageUrl
+
+    setMetaTags({
+      title: seoTitle,
+      description: seoDescription,
+      keywords: seoKeywords,
+      type: 'product',
+      image: seoImage
+    })
+
+    // Structured Data
+    setStructuredData([
+      getApartmentSchema(apartment),
+      getBreadcrumbSchema([
+        { name: 'Accueil', url: '/' },
+        { name: 'Nos Appartements', url: '/nos-appartements' },
+        { name: apartment.name, url: `/appartements/${apartment.slug}` }
+      ])
+    ])
     
     // Update images
     if (apartment.images && apartment.images.length > 0) {

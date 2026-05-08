@@ -18,7 +18,7 @@
         </svg>
         <div>
           <p class="text-sm font-semibold text-gray-900">Comment s'y rendre</p>
-          <p class="text-sm text-gray-600">{{ address }}</p>
+          <p class="text-sm text-gray-600">{{ displayAddress }}</p>
         </div>
       </div>
 
@@ -119,14 +119,14 @@
         <div>
           <p class="text-sm font-semibold text-gray-900">E-mail</p>
           <a
-            href="mailto:contact@kayliasuitehome.com"
+            :href="`mailto:${displayEmail}`"
             class="text-sm text-gray-600 hover:text-primary-blue"
-            >contact@kayliasuitehome.com</a
+            >{{ displayEmail }}</a
           >
         </div>
       </div>
 
-      <!-- WhatsApp -->
+      <!-- Phone/WhatsApp -->
       <div class="flex items-center gap-3">
         <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
           <path
@@ -134,9 +134,9 @@
           />
         </svg>
         <div>
-          <p class="text-sm font-semibold text-gray-900">WhatsApp</p>
-          <a href="tel:+237000000000" class="text-sm text-gray-600 hover:text-primary-blue"
-            >+237 00 00 00 00</a
+          <p class="text-sm font-semibold text-gray-900">{{ displayWhatsApp ? 'WhatsApp' : 'Téléphone' }}</p>
+          <a :href="`tel:${displayPhone}`" class="text-sm text-gray-600 hover:text-primary-blue"
+            >{{ displayPhone }}</a
           >
         </div>
       </div>
@@ -160,6 +160,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { usePublicSettings } from '@/composables/usePublicSettings'
 
 interface Props {
   apartmentName: string
@@ -175,7 +176,30 @@ const props = withDefaults(defineProps<Props>(), {
   apartmentImages: () => []
 })
 
+const { settings } = usePublicSettings()
+
 const selectedApartment = ref(props.apartmentName)
+
+// Dynamic address with fallback
+const displayAddress = computed(() => {
+  return settings.value?.business_address || props.address
+})
+
+// Dynamic email with fallback
+const displayEmail = computed(() => {
+  return settings.value?.business_email || 'contact@kayliasuitehome.com'
+})
+
+// Dynamic phone with fallback
+const displayPhone = computed(() => {
+  // Prefer WhatsApp if available, otherwise use regular phone
+  return settings.value?.business_whatsapp || settings.value?.business_phone || '+237 00 00 00 00'
+})
+
+// Check if WhatsApp is configured
+const displayWhatsApp = computed(() => {
+  return !!settings.value?.business_whatsapp
+})
 
 // Display images with fallback to placeholder
 const displayImages = computed(() => {

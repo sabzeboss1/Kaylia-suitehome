@@ -136,74 +136,120 @@ const getEquipmentIcon = (equipment: string): string => {
   
   // Mapping des équipements vers des icônes du répertoire
   const iconMap: Record<string, string> = {
-    // Connectivité
-    'wifi': '/images/équipements/Wifi.ico',
-    'wi-fi': '/images/équipements/Wifi.ico',
-    'wi-fi haut débit': '/images/équipements/Wifi.ico',
-    'internet': '/images/équipements/Wifi.ico',
+    // Connectivité (FR + EN)
+    'wifi': '/images/equipements/Wifi.ico',
+    'wi-fi': '/images/equipements/Wifi.ico',
+    'wi-fi haut débit': '/images/equipements/Wifi.ico',
+    'internet': '/images/equipements/Wifi.ico',
     
-    // Électronique
-    'tv': '/images/équipements/TV.ico',
-    'télévision': '/images/équipements/TV.ico',
-    'television': '/images/équipements/TV.ico',
-    'écran plat': '/images/équipements/TV.ico',
+    // Électronique (FR + EN)
+    'tv': '/images/equipements/TV.ico',
+    'télévision': '/images/equipements/TV.ico',
+    'television': '/images/equipements/TV.ico',
+    'écran plat': '/images/equipements/TV.ico',
     
-    // Cuisine
-    'cuisine': '/images/équipements/Cuisine équipée.ico',
-    'cuisine équipée': '/images/équipements/Cuisine équipée.ico',
-    'kitchenette': '/images/équipements/Cuisine équipée.ico',
-    'micro-ondes': '/images/équipements/Four-micro-ondes.ico',
-    'four micro-ondes': '/images/équipements/Four-micro-ondes.ico',
-    'four': '/images/équipements/Four.ico',
-    'réfrigérateur': '/images/équipements/Frigo.ico',
-    'frigo': '/images/équipements/Frigo.ico',
-    'cafetière': '/images/équipements/Group-1776.ico',
-    'machine à café': '/images/équipements/Group-1776.ico',
-    'bouilloire': '/images/équipements/Bouilloire.ico',
-    'lave-vaisselle': '/images/équipements/Lave vaisselle.ico',
-    'lave vaisselle': '/images/équipements/Lave vaisselle.ico',
+    // Cuisine (FR + EN)
+    'cuisine': '/images/equipements/Cuisine équipée.ico',
+    'cuisine équipée': '/images/equipements/Cuisine équipée.ico',
+    'kitchen': '/images/equipements/Cuisine équipée.ico',
+    'kitchenette': '/images/equipements/Cuisine équipée.ico',
+    'micro-ondes': '/images/equipements/Four-micro-ondes.ico',
+    'microwave': '/images/equipements/Four-micro-ondes.ico',
+    'four micro-ondes': '/images/equipements/Four-micro-ondes.ico',
+    'four': '/images/equipements/Four.ico',
+    'oven': '/images/equipements/Four.ico',
+    'réfrigérateur': '/images/equipements/Frigo.ico',
+    'refrigerator': '/images/equipements/Frigo.ico',
+    'frigo': '/images/equipements/Frigo.ico',
+    'fridge': '/images/equipements/Frigo.ico',
+    'cafetière': '/images/equipements/Group-1776.ico',
+    'coffee maker': '/images/equipements/Group-1776.ico',
+    'machine à café': '/images/equipements/Group-1776.ico',
+    'bouilloire': '/images/equipements/Bouilloire.ico',
+    'kettle': '/images/equipements/Bouilloire.ico',
+    'lave-vaisselle': '/images/equipements/Lave vaisselle.ico',
+    'lave vaisselle': '/images/equipements/Lave vaisselle.ico',
+    'dishwasher': '/images/equipements/Lave vaisselle.ico',
     
-    // Confort
-    'climatisation': '/images/équipements/Climatisation.ico',
-    'air conditionné': '/images/équipements/Climatisation.ico',
+    // Confort (FR + EN)
+    'climatisation': '/images/equipements/Climatisation.ico',
+    'air conditioning': '/images/equipements/Climatisation.ico',
+    'air conditionné': '/images/equipements/Climatisation.ico',
+    'a/c': '/images/equipements/Climatisation.ico',
     
-    // Services
-    'fer à repasser': '/images/équipements/Fer-à-repasser.ico',
-    'lave-linge': '/images/équipements/Machine à laver.ico',
-    'machine à laver': '/images/équipements/Machine à laver.ico',
-    'sèche-linge': '/images/équipements/Machine à laver.ico',
+    // Services (FR + EN)
+    'fer à repasser': '/images/equipements/Fer-à-repasser.ico',
+    'iron': '/images/equipements/Fer-à-repasser.ico',
+    'lave-linge': '/images/equipements/Machine à laver.ico',
+    'machine à laver': '/images/equipements/Machine à laver.ico',
+    'washing machine': '/images/equipements/Machine à laver.ico',
+    'sèche-linge': '/images/equipements/Group-1777.ico',
+    'dryer': '/images/equipements/Group-1777.ico',
     
-    // Literie
-    'lit king size': '/images/équipements/Group 1779.ico',
-    'lit double': '/images/équipements/Group 1779.ico',
-    'literie de luxe': '/images/équipements/Group 1779.ico',
+    // Literie (FR + EN)
+    'lit king size': '/images/equipements/Group 1779.ico',
+    'lit double': '/images/equipements/Group 1779.ico',
+    'literie de luxe': '/images/equipements/Group 1779.ico',
+    'king size bed': '/images/equipements/Group 1779.ico',
+    'double bed': '/images/equipements/Group 1779.ico',
     
-    // Vaisselle
-    'vaisselles': '/images/équipements/Group 1780.ico',
-    'vaisselle': '/images/équipements/Group 1780.ico',
+    // Vaisselle (FR + EN)
+    'vaisselles': '/images/equipements/Group 1780.ico',
+    'vaisselle': '/images/equipements/Group 1780.ico',
+    'dishes': '/images/equipements/Group 1780.ico',
     
-    // Autres
-    'savon et shampooing': '/images/équipements/Savon-et-Shampoing.ico',
-    'savon': '/images/équipements/Savon-et-Shampoing.ico',
-    'shampoing': '/images/équipements/Savon-et-Shampoing.ico',
-    'chaise bébé': '/images/équipements/Chaise bébé.ico',
-    'escalier': '/images/équipements/Escalier.ico',
-    'sécurité': '/images/équipements/Sécurité.ico',
-    'sécurité 24/7': '/images/équipements/Sécurité.ico',
-    'spa': '/images/équipements/SPA.ico',
-    'spa & bien-être': '/images/équipements/SPA.ico',
-    'conciergerie': '/images/équipements/Conciergerie.ico'
+    // Hygiène (FR + EN)
+    'savon et shampooing': '/images/equipements/Savon-et-Shampoing.ico',
+    'savon': '/images/equipements/Savon-et-Shampoing.ico',
+    'shampoing': '/images/equipements/Savon-et-Shampoing.ico',
+    'hair dryer': '/images/equipements/Savon-et-Shampoing.ico',
+    'sèche-cheveux': '/images/equipements/Savon-et-Shampoing.ico',
+    
+    // Famille (FR + EN)
+    'chaise bébé': '/images/equipements/Chaise bébé.ico',
+    'baby chair': '/images/equipements/Chaise bébé.ico',
+    
+    // Bâtiment (FR + EN)
+    'escalier': '/images/equipements/Escalier.ico',
+    'stairs': '/images/equipements/Escalier.ico',
+    'balcon': '/images/equipements/Maison.ico',
+    'balcony': '/images/equipements/Maison.ico',
+    'terrasse': '/images/equipements/Maison.ico',
+    'terrace': '/images/equipements/Maison.ico',
+    
+    // Mobilier (FR + EN)
+    'bureau': '/images/equipements/Personne.ico',
+    'desk': '/images/equipements/Personne.ico',
+    'armoire': '/images/equipements/Maison.ico',
+    'wardrobe': '/images/equipements/Maison.ico',
+    
+    // Sécurité & Services (FR + EN)
+    'sécurité': '/images/equipements/Sécurité.ico',
+    'sécurité 24/7': '/images/equipements/Sécurité.ico',
+    'security': '/images/equipements/Sécurité.ico',
+    'coffre-fort': '/images/equipements/Sécurité.ico',
+    'safe': '/images/equipements/Sécurité.ico',
+    'parking': '/images/equipements/Maison.ico',
+    'spa': '/images/equipements/SPA.ico',
+    'spa & bien-être': '/images/equipements/SPA.ico',
+    'conciergerie': '/images/equipements/Conciergerie.ico',
+    'concierge': '/images/equipements/Conciergerie.ico'
   }
   
-  // Chercher une correspondance exacte ou partielle
+  // Chercher une correspondance exacte d'abord
+  if (iconMap[equipmentLower]) {
+    return iconMap[equipmentLower]
+  }
+  
+  // Chercher une correspondance partielle
   for (const [key, icon] of Object.entries(iconMap)) {
-    if (equipmentLower === key || equipmentLower.includes(key)) {
+    if (equipmentLower.includes(key) || key.includes(equipmentLower)) {
       return icon
     }
   }
   
   // Icône par défaut - utiliser une icône générique
-  return '/images/équipements/Vector.ico'
+  return '/images/equipements/Vector.ico'
 }
 
 const handleReserve = () => {

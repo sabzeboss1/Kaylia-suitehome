@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #2563eb; }
+        pre {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🧪 Test Admin Panel</h1>
+        <p>Ce fichier teste si le serveur Vite fonctionne correctement.</p>
+        
+        <h2>Statut</h2>
+        <p class="success">✓ Le serveur Vite fonctionne!</p>
+        <p class="success">✓ Les fichiers statiques sont servis correctement</p>
+        
+        <h2>Tests API</h2>
+        <button onclick="testAPI()">Tester l'API Backend</button>
+        <button onclick="testLogin()">Tester le Login</button>
+        
+        <div id="results"></div>
+        
+        <h2>Instructions</h2>
+        <ol>
+            <li>Si vous voyez cette page, le serveur Vite fonctionne</li>
+            <li>Cliquez sur "Tester l'API Backend" pour vérifier la connexion</li>
+            <li>Si l'API fonctionne mais la page principale est blanche, c'est une erreur JavaScript</li>
+            <li>Ouvrez la console (F12) sur http://localhost:5173 pour voir l'erreur exacte</li>
+        </ol>
+        
+        <h2>Liens Utiles</h2>
+        <ul>
+            <li><a href="/">Page principale (peut être blanche si erreur JS)</a></li>
+            <li><a href="/check-errors.html">Page de diagnostic détaillée</a></li>
+            <li><a href="http://localhost:8000/api/apartments" target="_blank">API Backend - Apartments</a></li>
+        </ul>
+    </div>
+    
+    <script>
+        const apiUrl = 'http://localhost:8000';
+        const results = document.getElementById('results');
+        
+        async function testAPI() {
+            results.innerHTML = '<p>Test en cours...</p>';
+            try {
+                const response = await fetch(`${apiUrl}/api/apartments`);
+                const data = await response.json();
+                results.innerHTML = `
+                    <h3 class="success">✓ API Backend fonctionne!</h3>
+                    <pre>${JSON.stringify(data, null, 2).substring(0, 500)}...</pre>
+                `;
+            } catch (e) {
+                results.innerHTML = `
+                    <h3 class="error">✗ Erreur API</h3>
+                    <p>${e.message}</p>
+                    <p>Assurez-vous que le backend est lancé: <code>cd backend && php artisan serve</code></p>
+                `;
+            }
+        }
+        
+        async function testLogin() {
+            results.innerHTML = '<p>Test de login en cours...</p>';
+            try {
+                const response = await fetch(`${apiUrl}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'admin@kaylia.com',
+                        password: 'Kaylia@2024!Admin'
+                    })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    results.innerHTML = `
+                        <h3 class="success">✓ Login réussi!</h3>
+                        <p>Token: ${data.data.token.substring(0, 30)}...</p>
+                        <p>User: ${data.data.user.name} (${data.data.user.role})</p>
+                    `;
+                } else {
+                    results.innerHTML = `
+                        <h3 class="error">✗ Login échoué</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (e) {
+                results.innerHTML = `
+                    <h3 class="error">✗ Erreur</h3>
+                    <p>${e.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -5,16 +5,28 @@
       <SpaHero 
         :rating="4.9" 
         :review-count="17"
-        @show-events="activeTab = 'events'"
-        @show-appointments="activeTab = 'rdv'"
+        @show-events="scrollToTabs('events')"
+        @show-appointments="scrollToTabs('rdv')"
       />
 
       <!-- Tabs Section - Services and Events -->
-      <section class="bg-white py-12 md:py-16">
-        <div class="container mx-auto px-6 md:px-20">
-          <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-16">
-            <!-- Left Column - Tabs and Content -->
-            <div>
+      <section id="spa-tabs" class="section-aligned bg-white py-12 md:py-16">
+        <div class="section-content">
+          <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 lg:gap-16">
+            <!-- Right Column - Rating & Hours (First on mobile, second on desktop) -->
+            <div class="flex flex-col lg:order-2">
+              <div class="space-y-2 w-full lg:max-w-md lg:ml-auto">
+                <SpaRating 
+                  :overall-rating="4.9"
+                  :review-count="17"
+                  :rating-details="ratingDetails"
+                />
+                <SpaHours :opening-hours="openingHours" />
+              </div>
+            </div>
+
+            <!-- Left Column - Tabs and Content (Second on mobile, first on desktop) -->
+            <div class="lg:order-1">
               <SpaTabs :default-tab="activeTab" @tab-change="handleTabChange">
                 <!-- Prendre RDV Tab Content -->
                 <template #rdv>
@@ -51,66 +63,6 @@
                 </template>
               </SpaTabs>
             </div>
-
-            <!-- Right Column - Rating & Hours -->
-            <div class="flex flex-col">
-              <div class="space-y-4 max-w-md ml-auto">
-                <SpaRating 
-                  :overall-rating="4.9"
-                  :review-count="17"
-                  :rating-details="ratingDetails"
-                />
-                <SpaHours :opening-hours="openingHours" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Reviews Section -->
-      <section class="bg-[#b8a088] py-12 md:py-16">
-        <div class="container mx-auto px-6 md:px-20">
-          <!-- Title -->
-          <div class="text-center mb-12">
-            <h2 class="text-[32px] leading-[24px] font-semibold text-white mb-4" style="font-family: 'Poppins', sans-serif; font-weight: 600;">
-              Avis <span class="italic" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">clients</span>
-            </h2>
-            <p class="text-[16px] leading-[24px] font-light text-white" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 300;">
-              Nos clients ont aussi profité du SPA. Votre satisfaction est notre principale préoccupation.
-            </p>
-          </div>
-
-          <!-- Reviews Grid -->
-          <div class="relative max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <ReviewCard 
-                v-for="review in displayedReviews" 
-                :key="review.id"
-                :review="review"
-              />
-            </div>
-
-            <!-- Navigation Arrows -->
-            <div class="flex justify-center gap-3">
-              <button 
-                @click="previousReviews"
-                :disabled="currentReviewPage === 0"
-                class="w-12 h-12 bg-primary-blue hover:bg-[#086780] text-white rounded-full flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-              </button>
-              <button 
-                @click="nextReviews"
-                :disabled="currentReviewPage >= Math.ceil(reviews.length / reviewsPerPage) - 1"
-                class="w-12 h-12 bg-primary-blue hover:bg-[#086780] text-white rounded-full flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </button>
-            </div>
           </div>
         </div>
       </section>
@@ -125,14 +77,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { logger } from '@/utils/logger'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import SpaHero from '@/components/spa/SpaHero.vue'
 import SpaTabs from '@/components/spa/SpaTabs.vue'
 import SpaServiceCard from '@/components/spa/SpaServiceCard.vue'
 import SpaRating from '@/components/spa/SpaRating.vue'
 import SpaHours from '@/components/spa/SpaHours.vue'
-import ReviewCard from '@/components/spa/ReviewCard.vue'
 import NewsletterSection from '@/components/home/NewsletterSection.vue'
 import SocialSection from '@/components/home/SocialSection.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
@@ -265,24 +217,61 @@ const reviews = ref([
 ])
 
 // Reviews pagination
-const currentReviewPage = ref(0)
-const reviewsPerPage = 4
+const carouselTrack = ref<HTMLElement | null>(null)
+const currentOffset = ref(0)
+const cardWidth = 320 // Width of each card + gap
+const autoScrollInterval = ref<number | null>(null)
+const isAutoScrollPaused = ref(false)
 
-const displayedReviews = computed(() => {
-  const start = currentReviewPage.value * reviewsPerPage
-  return reviews.value.slice(start, start + reviewsPerPage)
+// Create infinite loop by tripling the reviews array
+const infiniteReviews = computed(() => {
+  return [...reviews.value, ...reviews.value, ...reviews.value]
 })
 
-const nextReviews = () => {
-  if (currentReviewPage.value < Math.ceil(reviews.value.length / reviewsPerPage) - 1) {
-    currentReviewPage.value++
+const scrollNext = () => {
+  const maxOffset = reviews.value.length * cardWidth
+  currentOffset.value += cardWidth
+  
+  // Reset to start when reaching the end of first set
+  if (currentOffset.value >= maxOffset) {
+    setTimeout(() => {
+      currentOffset.value = 0
+    }, 500)
   }
 }
 
-const previousReviews = () => {
-  if (currentReviewPage.value > 0) {
-    currentReviewPage.value--
+const scrollPrev = () => {
+  if (currentOffset.value <= 0) {
+    // Jump to end of first set
+    currentOffset.value = (reviews.value.length - 1) * cardWidth
+  } else {
+    currentOffset.value -= cardWidth
   }
+}
+
+const pauseAutoScroll = () => {
+  isAutoScrollPaused.value = true
+  if (autoScrollInterval.value) {
+    clearInterval(autoScrollInterval.value)
+    autoScrollInterval.value = null
+  }
+}
+
+const resumeAutoScroll = () => {
+  isAutoScrollPaused.value = false
+  startAutoScroll()
+}
+
+const startAutoScroll = () => {
+  if (autoScrollInterval.value) {
+    clearInterval(autoScrollInterval.value)
+  }
+  
+  autoScrollInterval.value = window.setInterval(() => {
+    if (!isAutoScrollPaused.value) {
+      scrollNext()
+    }
+  }, 3000) // Auto-scroll every 3 seconds
 }
 
 // Computed properties for services
@@ -310,6 +299,26 @@ const handleTabChange = (tab: 'rdv' | 'events') => {
   activeTab.value = tab
 }
 
+// Scroll to tabs section
+const scrollToTabs = (tab: 'rdv' | 'events') => {
+  activeTab.value = tab
+  
+  // Wait for next tick to ensure tab is changed
+  setTimeout(() => {
+    const tabsSection = document.getElementById('spa-tabs')
+    if (tabsSection) {
+      const headerOffset = 80 // Offset pour le header fixe
+      const elementPosition = tabsSection.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    }
+  }, 100)
+}
+
 // Fetch data on mount
 onMounted(async () => {
   try {
@@ -317,9 +326,19 @@ onMounted(async () => {
       fetchServices(),
       fetchOpeningHours()
     ])
+    
+    // Start auto-scroll for reviews
+    startAutoScroll()
   } catch (err) {
-    console.error('Failed to fetch spa data:', err)
+    logger.error('Failed to fetch spa data:', err)
     // Fallback to default data (already handled in computed properties)
+  }
+})
+
+onUnmounted(() => {
+  // Clean up auto-scroll interval
+  if (autoScrollInterval.value) {
+    clearInterval(autoScrollInterval.value)
   }
 })
 </script>

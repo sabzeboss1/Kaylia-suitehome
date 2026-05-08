@@ -32,6 +32,12 @@ const routes = [
         meta: { requiresAuth: true },
       },
       {
+        path: 'availability',
+        name: 'ApartmentAvailability',
+        component: () => import('../views/ApartmentAvailability.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         path: 'customers',
         name: 'Customers',
         component: () => import('../views/Customers.vue'),
@@ -108,7 +114,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/admin/'),
   routes,
 })
 

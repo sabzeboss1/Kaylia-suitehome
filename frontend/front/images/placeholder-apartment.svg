@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect fill="#e5e7eb" width="400" height="300"/>
+  <g fill="#9ca3af">
+    <path d="M200 120 L240 150 L240 200 L160 200 L160 150 Z" opacity="0.3"/>
+    <rect x="170" y="170" width="20" height="30" opacity="0.3"/>
+    <rect x="210" y="170" width="20" height="30" opacity="0.3"/>
+    <rect x="180" y="155" width="40" height="10" opacity="0.3"/>
+  </g>
+  <text x="200" y="240" font-family="Arial, sans-serif" font-size="14" fill="#6b7280" text-anchor="middle">
+    Image non disponible
+  </text>
+</svg>

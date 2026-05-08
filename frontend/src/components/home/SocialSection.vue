@@ -5,11 +5,18 @@
       <h2 class="text-[32px] leading-[24px] font-semibold text-gray-900 mb-3" style="font-family: 'Poppins', sans-serif; font-weight: 600;">
         Suivez-nous sur <span class="italic" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">Instagram</span>
       </h2>
-      <p class="text-[16px] leading-[24px] text-gray-700" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 300;">@kayliasuitehome</p>
+      <p class="text-[16px] leading-[24px] text-gray-700" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 300;">
+        @{{ instagramUsername }}
+      </p>
     </div>
 
-    <!-- Instagram Slider -->
-    <div class="relative px-6 md:px-12">
+    <!-- Instagram Widget (if enabled) -->
+    <div v-if="widgetEnabled && widgetCode" class="px-6 md:px-12">
+      <div v-html="widgetCode" class="instagram-widget-container"></div>
+    </div>
+
+    <!-- Fallback: Instagram Slider (default images) -->
+    <div v-else class="relative px-6 md:px-12">
       <div 
         ref="sliderContainer"
         class="flex gap-4 overflow-x-auto scroll-smooth pb-4 scrollbar-hide snap-x snap-mandatory"
@@ -81,8 +88,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { logger } from '@/utils/logger'
 import LazyImage from '@/components/common/LazyImage.vue'
+import axios from 'axios'
 
 interface InstagramPost {
   image: string
@@ -95,8 +104,11 @@ interface InstagramPost {
 }
 
 const sliderContainer = ref<HTMLElement | null>(null)
+const widgetEnabled = ref(false)
+const widgetCode = ref('')
+const instagramUsername = ref('kayliasuitehome')
 
-// Mock Instagram posts - À remplacer par de vraies données de l'API Instagram
+// Fallback Instagram posts - Utilisés si le widget n'est pas activé
 const instagramPosts = ref<InstagramPost[]>([
   {
     image: '/images/instagram/image1.png',
@@ -144,6 +156,30 @@ const instagramPosts = ref<InstagramPost[]>([
   }
 ])
 
+// Load Instagram widget configuration
+const loadInstagramWidget = async () => {
+  try {
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
+    const response = await axios.get(`${apiUrl}/settings/instagram/widget`)
+    
+    if (response.data.success) {
+      widgetEnabled.value = response.data.data.enabled || false
+      widgetCode.value = response.data.data.widget_code || ''
+      instagramUsername.value = response.data.data.username || 'kayliasuitehome'
+      
+      logger.log('Instagram widget loaded:', {
+        enabled: widgetEnabled.value,
+        hasCode: !!widgetCode.value,
+        username: instagramUsername.value
+      })
+    }
+  } catch (error) {
+    logger.error('Failed to load Instagram widget, using fallback:', error)
+    // Use fallback images
+    widgetEnabled.value = false
+  }
+}
+
 const scrollPrev = () => {
   if (sliderContainer.value) {
     const scrollAmount = sliderContainer.value.offsetWidth * 0.8
@@ -157,6 +193,10 @@ const scrollNext = () => {
     sliderContainer.value.scrollBy({ left: scrollAmount, behavior: 'smooth' })
   }
 }
+
+onMounted(() => {
+  loadInstagramWidget()
+})
 </script>
 
 <style scoped>
@@ -185,5 +225,17 @@ const scrollNext = () => {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Instagram widget container */
+.instagram-widget-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Ensure third-party widgets are responsive */
+.instagram-widget-container :deep(iframe),
+.instagram-widget-container :deep(script) {
+  max-width: 100%;
 }
 </style>

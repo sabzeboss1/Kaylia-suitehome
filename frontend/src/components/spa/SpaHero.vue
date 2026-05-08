@@ -1,6 +1,6 @@
 <template>
   <section class="bg-[#d2c8bc] pt-[62px] md:pt-20 pb-12 md:pb-16">
-    <div class="container mx-auto px-6 md:px-12 lg:px-20 pt-8 md:pt-12">
+    <div class="container-aligned pt-32 md:pt-40">
       <!-- Header Section -->
       <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-8 md:mb-12">
         <!-- Left: Title and Rating -->
@@ -17,45 +17,47 @@
         </div>
         
         <!-- Right: Action Buttons -->
-        <div class="flex gap-3 mt-6 md:mt-0">
+        <div class="flex flex-col sm:flex-row gap-3 mt-6 md:mt-0">
           <button 
             @click="$emit('show-events')"
-            class="bg-transparent hover:bg-gray-900/5 text-gray-900 border border-gray-900 px-6 py-2.5 rounded text-sm font-medium transition-colors"
+            class="bg-transparent hover:bg-gray-900/5 text-gray-900 border border-gray-900 px-4 md:px-6 py-2.5 rounded text-sm font-medium transition-colors"
           >
             Événements
           </button>
           <button 
             @click="$emit('show-appointments')"
-            class="bg-[#10648c] hover:bg-[#0d5273] text-white px-6 py-2.5 rounded text-sm font-medium transition-colors"
+            class="bg-[#10648c] hover:bg-[#0d5273] text-white px-4 md:px-6 py-2.5 rounded text-sm font-medium transition-colors"
           >
             Prendre RDV
           </button>
         </div>
       </div>
 
-      <!-- Gallery Section - Asymmetric Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-        <!-- Large Image - Left (65-70%) -->
-        <div class="lg:col-span-2 relative overflow-hidden rounded-xl">
+      <!-- Gallery Section - Exact Figma Dimensions -->
+      <div class="flex flex-col lg:flex-row gap-6 lg:gap-[61px]">
+        <!-- Large Image - Left (908px width, 703px height) -->
+        <div class="flex-shrink-0 lg:w-[908px] relative overflow-hidden rounded-[5px] group cursor-pointer">
           <img 
-            :src="mainImage" 
+            :src="getImageUrl(galleryImages.mainImage)" 
             alt="Grande piscine intérieure du spa" 
-            class="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover"
+            class="w-full h-[300px] md:h-[400px] lg:h-[703px] object-cover transition-all duration-300 group-hover:scale-105"
           />
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300"></div>
         </div>
 
-        <!-- Small Images - Right (30-35%) -->
-        <div class="lg:col-span-1 flex flex-col gap-4 md:gap-6">
+        <!-- Small Images - Right (316px width, 702px total height) - Stack of 3 with 30px gap -->
+        <div class="flex-shrink-0 lg:w-[316px] grid grid-cols-3 lg:grid-cols-1 gap-3 lg:gap-[30px]">
           <div 
-            v-for="(image, index) in sideImages" 
+            v-for="(image, index) in galleryImages.sideImages" 
             :key="index"
-            class="relative overflow-hidden rounded-xl"
+            class="relative overflow-hidden rounded-[5px] group cursor-pointer"
           >
             <img 
-              :src="image" 
+              :src="getImageUrl(image)" 
               :alt="`Spa ${index === 0 ? 'Jacuzzi' : index === 1 ? 'Transats' : 'Petit bassin'}`" 
-              class="w-full h-[120px] md:h-[150px] lg:h-[192px] object-cover"
+              class="w-full h-[100px] md:h-[120px] lg:h-[214px] object-cover transition-all duration-300 group-hover:scale-105"
             />
+            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300"></div>
           </div>
         </div>
       </div>
@@ -64,26 +66,74 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+
 interface Props {
   rating?: number
   reviewCount?: number
-  mainImage?: string
-  sideImages?: string[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
   rating: 4.9,
-  reviewCount: 17,
-  mainImage: '/images/spa/grand.jpg',
-  sideImages: () => [
-    '/images/spa/petit1.jpg',
-    '/images/spa/petit2.jpg',
-    '/images/spa/petit3.jpg'
-  ]
+  reviewCount: 17
 })
 
 defineEmits<{
   'show-events': []
   'show-appointments': []
 }>()
+
+// Gallery images from API
+const galleryImages = ref({
+  mainImage: '/images/spa/grand.jpg',
+  sideImages: [
+    '/images/spa/petit1.jpg',
+    '/images/spa/petit2.jpg',
+    '/images/spa/petit3.jpg'
+  ]
+})
+
+// Load gallery images from API
+const loadGalleryImages = async () => {
+  try {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+    const response = await axios.get(`${apiBaseUrl}/content/spa`)
+    
+    if (response.data.success && response.data.data) {
+      const content = response.data.data
+      
+      // Update images if they exist in the API response
+      if (content.hero_main_image) {
+        galleryImages.value.mainImage = content.hero_main_image
+      }
+      
+      const sideImages = []
+      if (content.hero_side_image_1) sideImages.push(content.hero_side_image_1)
+      if (content.hero_side_image_2) sideImages.push(content.hero_side_image_2)
+      if (content.hero_side_image_3) sideImages.push(content.hero_side_image_3)
+      
+      if (sideImages.length > 0) {
+        galleryImages.value.sideImages = sideImages
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load SPA gallery images:', error)
+    // Keep default images on error
+  }
+}
+
+// Helper to get full image URL
+const getImageUrl = (url: string) => {
+  if (!url) return ''
+  if (url.startsWith('http')) return url
+  
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+  const cleanUrl = url.startsWith('/') ? url.substring(1) : url
+  return apiBaseUrl.replace('/api', '') + '/storage/' + cleanUrl
+}
+
+onMounted(() => {
+  loadGalleryImages()
+})
 </script>

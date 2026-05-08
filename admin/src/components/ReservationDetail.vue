@@ -33,33 +33,47 @@
           @click="updateStatus('confirmed')"
           class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
         >
-          Confirm Reservation
+          Confirmer
         </button>
         <button
           v-if="['pending', 'confirmed'].includes(reservation.status)"
           @click="updateStatus('cancelled')"
           class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
         >
-          Cancel Reservation
+          Annuler
+        </button>
+        <button
+          v-if="['confirmed'].includes(reservation.status)"
+          @click="markAsOccupied"
+          class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          Marquer Occupé
+        </button>
+        <button
+          v-if="reservation.payment_status === 'pending'"
+          @click="markAsPaid"
+          class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+        >
+          Marquer Payé
         </button>
         <button
           @click="sendConfirmationEmail"
           class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Send Confirmation Email
+          Envoyer Email
         </button>
         <button
           @click="downloadInvoice"
           class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
         >
-          Download Invoice
+          Télécharger Facture
         </button>
         <button
           v-if="reservation.payment_status === 'paid'"
           @click="processRefund"
           class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
         >
-          Process Refund
+          Rembourser
         </button>
       </div>
     </div>
@@ -370,6 +384,46 @@ const processRefund = () => {
   showConfirmDialog.value = true
 }
 
+const markAsOccupied = () => {
+  confirmMessage.value = 'Marquer cet appartement comme occupé pour cette période?'
+  pendingAction.value = async () => {
+    try {
+      await apiClient.put(`/reservations/${props.reservationId}`, {
+        status: 'occupied'
+      })
+      
+      successMessage.value = 'Appartement marqué comme occupé'
+      setTimeout(() => { successMessage.value = '' }, 5000)
+      
+      await fetchReservation()
+      emit('updated')
+    } catch (err) {
+      error.value = err.response?.data?.error?.message || 'Failed to mark as occupied'
+    }
+  }
+  showConfirmDialog.value = true
+}
+
+const markAsPaid = () => {
+  confirmMessage.value = 'Marquer ce paiement comme payé?'
+  pendingAction.value = async () => {
+    try {
+      await apiClient.put(`/reservations/${props.reservationId}`, {
+        payment_status: 'paid'
+      })
+      
+      successMessage.value = 'Paiement marqué comme payé'
+      setTimeout(() => { successMessage.value = '' }, 5000)
+      
+      await fetchReservation()
+      emit('updated')
+    } catch (err) {
+      error.value = err.response?.data?.error?.message || 'Failed to mark as paid'
+    }
+  }
+  showConfirmDialog.value = true
+}
+
 const confirmAction = async () => {
   showConfirmDialog.value = false
   if (pendingAction.value) {
@@ -399,7 +453,8 @@ const getStatusClass = (status) => {
     pending: 'px-3 py-1 text-sm font-semibold rounded-full bg-yellow-100 text-yellow-800',
     confirmed: 'px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800',
     cancelled: 'px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-800',
-    completed: 'px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800'
+    completed: 'px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800',
+    occupied: 'px-3 py-1 text-sm font-semibold rounded-full bg-indigo-100 text-indigo-800'
   }
   return classes[status] || 'px-3 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800'
 }

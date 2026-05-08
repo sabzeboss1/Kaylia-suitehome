@@ -2,13 +2,13 @@
   <DefaultLayout>
     <div class="about-page">
       <!-- Hero Section -->
-      <section class="relative h-[55vh] md:h-[65vh] bg-cover bg-center flex items-center hero-section pt-[62px] md:pt-20">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/75 to-black/65"></div>
-        <div class="container mx-auto px-6 md:px-20 relative z-10">
-          <h1 class="text-white text-[40px] leading-tight font-bold max-w-4xl" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
-            Notre <span class="italic">Histoire</span>
+      <section class="relative h-[45vh] md:h-[55vh] bg-cover bg-center flex items-center hero-section pt-[62px] md:pt-20">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/65 to-black/55"></div>
+        <div class="max-w-7xl mx-auto px-8 w-full relative z-10">
+          <h1 class="text-white text-3xl md:text-[40px] md:leading-[48px] font-medium leading-tight max-w-4xl" style="font-family: 'Poppins', sans-serif; font-weight: 500;">
+            Notre <span class="italic" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">Histoire</span>
           </h1>
-          <p class="text-white text-[16px] leading-relaxed font-normal mt-4 max-w-2xl" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+          <p class="text-white text-sm md:text-[16px] leading-relaxed font-normal mt-4 max-w-2xl" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
             Une passion pour l'hospitalité et l'excellence
           </p>
         </div>
@@ -16,7 +16,7 @@
 
       <!-- Story Section -->
       <section class="bg-white py-16 md:py-24">
-        <div class="container mx-auto px-6 md:px-20">
+        <div class="container-aligned">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <!-- Left - Image -->
             <div class="order-2 lg:order-1">
@@ -29,10 +29,10 @@
             
             <!-- Right - Content -->
             <div class="order-1 lg:order-2">
-              <h2 class="text-[40px] leading-tight font-bold text-gray-900 mb-6" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
+              <h2 class="text-2xl md:text-[40px] leading-tight font-bold text-gray-900 mb-6" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
                 L'origine de <span class="text-[#1c5d78]">Kaylia Suite Home</span>
               </h2>
-              <div class="space-y-4 text-[16px] leading-relaxed font-normal text-gray-600" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+              <div class="space-y-4 text-sm md:text-[16px] leading-relaxed font-normal text-gray-600" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
                 <p>
                   Fondée en 2020, Kaylia Suite Home est née d'une vision simple mais ambitieuse : 
                   offrir à Yaoundé un lieu d'hébergement qui allie le confort d'un chez-soi au luxe 
@@ -55,54 +55,54 @@
 
       <!-- Values Section -->
       <section class="bg-[#e8dcc8] py-16 md:py-24">
-        <div class="container mx-auto px-6 md:px-20">
-          <div class="text-center mb-16">
-            <h2 class="text-[40px] leading-tight font-bold text-gray-900 mb-4" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
-              Nos <span class="italic text-[#1c5d78]">Valeurs</span>
+        <div class="container-aligned">
+          <div class="text-center mb-12 md:mb-16">
+            <h2 class="text-2xl md:text-[40px] leading-tight font-bold text-gray-900 mb-4" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
+              Nos <span class="italic text-[#1c5d78]" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">Valeurs</span>
             </h2>
-            <p class="text-[16px] leading-relaxed font-normal text-gray-600 max-w-2xl mx-auto" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+            <p class="text-sm md:text-[16px] leading-relaxed font-normal text-gray-600 max-w-2xl mx-auto" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
               Ce qui guide notre engagement envers l'excellence
             </p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <!-- Value 1 -->
-            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div class="w-16 h-16 bg-[#1c5d78] rounded-full flex items-center justify-center mb-6 mx-auto">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div class="w-14 h-14 md:w-16 md:h-16 bg-[#1c5d78] rounded-full flex items-center justify-center mb-4 md:mb-6 mx-auto">
+                <svg class="w-7 h-7 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
               </div>
-              <h3 class="text-[40px] leading-tight font-bold text-gray-900 mb-3 text-center" style="font-family: 'Poppins', sans-serif; font-weight: 700;">Excellence</h3>
-              <p class="text-[16px] leading-relaxed font-normal text-gray-600 text-center" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+              <h3 class="text-xl md:text-2xl leading-tight font-bold text-gray-900 mb-3 text-center" style="font-family: 'Poppins', sans-serif; font-weight: 700;">Excellence</h3>
+              <p class="text-sm md:text-[16px] leading-relaxed font-normal text-gray-600 text-center" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
                 Nous nous engageons à offrir des services et des installations de la plus haute qualité, 
                 dépassant constamment les attentes de nos clients.
               </p>
             </div>
 
             <!-- Value 2 -->
-            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div class="w-16 h-16 bg-[#1c5d78] rounded-full flex items-center justify-center mb-6 mx-auto">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div class="w-14 h-14 md:w-16 md:h-16 bg-[#1c5d78] rounded-full flex items-center justify-center mb-4 md:mb-6 mx-auto">
+                <svg class="w-7 h-7 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                 </svg>
               </div>
-              <h3 class="text-[40px] leading-tight font-bold text-gray-900 mb-3 text-center" style="font-family: 'Poppins', sans-serif; font-weight: 700;">Hospitalité</h3>
-              <p class="text-[16px] leading-relaxed font-normal text-gray-600 text-center" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+              <h3 class="text-xl md:text-2xl leading-tight font-bold text-gray-900 mb-3 text-center" style="font-family: 'Poppins', sans-serif; font-weight: 700;">Hospitalité</h3>
+              <p class="text-sm md:text-[16px] leading-relaxed font-normal text-gray-600 text-center" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
                 Chaque client est accueilli avec chaleur et attention. Nous créons une atmosphère 
                 où chacun se sent valorisé et pris en charge.
               </p>
             </div>
 
             <!-- Value 3 -->
-            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div class="w-16 h-16 bg-[#1c5d78] rounded-full flex items-center justify-center mb-6 mx-auto">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div class="w-14 h-14 md:w-16 md:h-16 bg-[#1c5d78] rounded-full flex items-center justify-center mb-4 md:mb-6 mx-auto">
+                <svg class="w-7 h-7 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                 </svg>
               </div>
-              <h3 class="text-[40px] leading-tight font-bold text-gray-900 mb-3 text-center" style="font-family: 'Poppins', sans-serif; font-weight: 700;">Authenticité</h3>
-              <p class="text-[16px] leading-relaxed font-normal text-gray-600 text-center" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+              <h3 class="text-xl md:text-2xl leading-tight font-bold text-gray-900 mb-3 text-center" style="font-family: 'Poppins', sans-serif; font-weight: 700;">Authenticité</h3>
+              <p class="text-sm md:text-[16px] leading-relaxed font-normal text-gray-600 text-center" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
                 Nous restons fidèles à notre identité camerounaise tout en offrant des standards 
                 internationaux de confort et de service.
               </p>
@@ -113,14 +113,14 @@
 
       <!-- Team Section -->
       <section class="bg-white py-16 md:py-24">
-        <div class="container mx-auto px-6 md:px-20">
+        <div class="container-aligned">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <!-- Left - Content -->
             <div>
-              <h2 class="text-[40px] leading-tight font-bold text-gray-900 mb-6" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
-                Une équipe <span class="italic text-[#1c5d78]">passionnée</span>
+              <h2 class="text-2xl md:text-[40px] leading-tight font-bold text-gray-900 mb-6" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
+                Une équipe <span class="italic text-[#1c5d78]" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">passionnée</span>
               </h2>
-              <div class="space-y-4 text-[16px] leading-relaxed font-normal text-gray-600" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+              <div class="space-y-4 text-sm md:text-[16px] leading-relaxed font-normal text-gray-600" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
                 <p>
                   Derrière Kaylia Suite Home se trouve une équipe dévouée de professionnels de 
                   l'hospitalité qui partagent une passion commune : créer des expériences mémorables 
@@ -152,7 +152,7 @@
 
       <!-- Stats Section -->
       <section class="bg-[#1c5d78] py-16 md:py-20">
-        <div class="container mx-auto px-6 md:px-20">
+        <div class="container-aligned">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
             <!-- Stat 1 -->
             <div class="text-center">
@@ -183,16 +183,16 @@
 
       <!-- Vision Section -->
       <section class="bg-[#b8a088] py-16 md:py-24">
-        <div class="container mx-auto px-6 md:px-20">
+        <div class="container-aligned">
           <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-[40px] leading-tight font-bold text-white mb-8" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
-              Notre <span class="italic">Vision</span>
+            <h2 class="text-2xl md:text-[40px] leading-tight font-bold text-gray-900 mb-6 md:mb-8" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
+              Notre <span class="italic text-[#1c5d78]" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">Vision</span>
             </h2>
-            <p class="text-white text-[16px] leading-relaxed font-normal mb-8" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+            <p class="text-gray-900 text-sm md:text-[16px] leading-relaxed font-normal mb-6 md:mb-8" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
               Devenir la référence en matière d'hébergement haut de gamme à Yaoundé, reconnue pour 
               son excellence, son authenticité et son engagement envers le bien-être de ses clients.
             </p>
-            <p class="text-white/90 text-[16px] leading-relaxed font-normal" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+            <p class="text-gray-900 text-sm md:text-[16px] leading-relaxed font-normal" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
               Nous aspirons à créer un espace où le luxe rencontre la convivialité, où chaque séjour 
               devient une expérience inoubliable, et où nos clients se sentent véritablement chez eux.
             </p>
@@ -202,11 +202,11 @@
 
       <!-- CTA Section -->
       <section class="bg-white py-16 md:py-20">
-        <div class="container mx-auto px-6 md:px-20 text-center">
-          <h2 class="text-[40px] leading-tight font-bold text-gray-900 mb-6" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
-            Prêt à vivre l'expérience <span class="text-[#1c5d78]">Kaylia</span> ?
+        <div class="container-aligned text-center">
+          <h2 class="text-2xl md:text-[40px] leading-tight font-bold text-gray-900 mb-4 md:mb-6" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
+            Prêt à vivre l'expérience <span class="italic text-[#1c5d78]" style="font-family: 'Cormorant Garamond', serif; font-weight: 700;">Kaylia</span> ?
           </h2>
-          <p class="text-[16px] leading-relaxed font-normal text-gray-600 mb-8 max-w-2xl mx-auto" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
+          <p class="text-sm md:text-[16px] leading-relaxed font-normal text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto" style="font-family: 'Rounded Mplus 1c', sans-serif; font-weight: 400;">
             Découvrez nos appartements et laissez-nous vous offrir un séjour exceptionnel
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">

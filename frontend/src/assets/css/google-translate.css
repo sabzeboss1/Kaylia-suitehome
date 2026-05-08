@@ -1,0 +1,76 @@
+/**
+ * Google Translate Widget Customization
+ * Hide the default Google Translate bar and customize appearance
+ */
+
+/* Hide the Google Translate top bar */
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+/* Hide the Google Translate widget container */
+#google_translate_element {
+  display: none !important;
+}
+
+/* Remove the top margin added by Google Translate */
+body {
+  top: 0 !important;
+}
+
+/* Hide the "Powered by Google" text */
+.goog-te-gadget {
+  color: transparent !important;
+  font-size: 0 !important;
+}
+
+.goog-te-gadget > span {
+  display: none !important;
+}
+
+.goog-te-gadget > div {
+  display: none !important;
+}
+
+/* Hide the Google Translate combo box */
+.goog-te-combo {
+  display: none !important;
+}
+
+/* Prevent layout shift when translation is active */
+.skiptranslate {
+  display: none !important;
+}
+
+/* Fix for iframe that Google Translate adds */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body > .skiptranslate {
+  display: none !important;
+}
+
+/* Ensure translated content maintains proper styling */
+font[style*="vertical-align: inherit;"] {
+  vertical-align: inherit !important;
+}
+
+/* Fix for Google Translate affecting layout */
+html.translated-ltr {
+  margin-top: 0 !important;
+}
+
+html.translated-rtl {
+  margin-top: 0 !important;
+}
+
+/* Hide Google Translate notification */
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+/* Smooth transition for translated content */
+.translated {
+  transition: opacity 0.3s ease-in-out;
+}

@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import axios from 'axios'
 import apiClient from '@/utils/api'
 import type { SelectedComfortOption } from '@/stores/booking'
 
@@ -64,16 +65,73 @@ export function useReservation() {
     error.value = null
 
     try {
-      const response = await apiClient.post('/reservations', data)
+      console.log('🚀 Creating reservation with data:', data)
       
-      if (response.data.success) {
-        reservation.value = response.data.data
-        return response.data.data
-      } else {
-        throw new Error(response.data.error?.message || 'Failed to create reservation')
+      // apiClient returns response.data directly due to interceptor
+      const responseData = await apiClient.post('/reservations', data)
+      
+      console.log('✅ API Response Data:', responseData)
+      
+      // Check if response indicates success
+      if (responseData.success === false) {
+        const errorMsg = responseData.error?.message || responseData.message || 'Failed to create reservation'
+        console.error('❌ API returned success=false:', responseData)
+        throw new Error(errorMsg)
       }
+      
+      // Extract reservation data (could be in .data or directly in response)
+      const reservationData = responseData.data || responseData
+      
+      // Validate that we have a reservation with an ID
+      if (!reservationData.id) {
+        console.error('❌ No reservation ID in response:', reservationData)
+        throw new Error('Invalid reservation data received')
+      }
+      
+      console.log('✅ Reservation created successfully:', reservationData)
+      reservation.value = reservationData
+      return reservationData
     } catch (e: any) {
-      const errorMessage = e.response?.data?.error?.message || e.message || 'Failed to create reservation'
+      console.error('❌ Full error object:', e)
+      console.error('❌ Error response:', e.response)
+      console.error('❌ Error response data:', e.response?.data)
+      console.error('❌ Error response status:', e.response?.status)
+      
+      // Log validation details if present
+      if (e.response?.data?.error?.details) {
+        console.error('❌ VALIDATION DETAILS:', e.response.data.error.details)
+      }
+      
+      // Extract detailed error message
+      let errorMessage = 'Failed to create reservation'
+      
+      if (e.response?.data) {
+        const apiError = e.response.data
+        
+        // Check for validation errors (422)
+        if (e.response.status === 422 && apiError.errors) {
+          const firstErrorKey = Object.keys(apiError.errors)[0]
+          const firstError = apiError.errors[firstErrorKey]
+          errorMessage = Array.isArray(firstError) ? firstError[0] : firstError
+          console.error('❌ Validation error:', firstErrorKey, '=', errorMessage)
+        }
+        // Check for error message in response
+        else if (apiError.message) {
+          errorMessage = apiError.message
+          console.error('❌ API error message:', errorMessage)
+        }
+        // Check for error object
+        else if (apiError.error?.message) {
+          errorMessage = apiError.error.message
+          console.error('❌ API error.message:', errorMessage)
+        }
+      }
+      // Network or other errors
+      else if (e.message) {
+        errorMessage = e.message
+        console.error('❌ Exception message:', errorMessage)
+      }
+      
       error.value = errorMessage
       throw new Error(errorMessage)
     } finally {
@@ -93,14 +151,15 @@ export function useReservation() {
     error.value = null
 
     try {
-      const response = await apiClient.post('/reservations/check-availability', {
+      // apiClient returns response.data directly due to interceptor
+      const responseData = await apiClient.post('/reservations/check-availability', {
         apartment_id: apartmentId,
         check_in_date: checkInDate,
         check_out_date: checkOutDate
       })
 
-      if (response.data.success) {
-        return response.data.data.available
+      if (responseData.success) {
+        return responseData.data.available
       }
       return false
     } catch (e: any) {
@@ -123,25 +182,40 @@ export function useReservation() {
     error.value = null
 
     try {
-      const response = await apiClient.post('/promo-codes/validate', {
+      // apiClient returns response.data directly due to interceptor
+      const responseData = await apiClient.post('/promo-codes/validate', {
         code,
         total_nights: totalNights,
         subtotal
       })
 
-      if (response.data.success && response.data.data.valid) {
+      // Success case: { success: true, data: { id, code, discount_amount, ... } }
+      if (responseData.success && responseData.data) {
+        const promoCode = responseData.data
         return {
           valid: true,
-          discount: response.data.data.promo_code.discount_amount || 0
+          discount: promoCode.discount_amount || 0
         }
       } else {
+        // Cas improbable mais on gère quand même
         return {
           valid: false,
-          error: response.data.data.error || 'Invalid promo code'
+          error: 'Code promo invalide'
         }
       }
     } catch (e: any) {
-      const errorMessage = e.response?.data?.error?.message || e.message || 'Failed to validate promo code'
+      // L'API retourne 422 pour un code invalide
+      // Error structure: { success: false, error: { code: "...", message: "...", details: {...} } }
+      if (e.response?.status === 422 && e.response?.data?.error) {
+        const apiError = e.response.data.error
+        return {
+          valid: false,
+          error: apiError.message || 'Code promo invalide'
+        }
+      }
+      
+      // Autres erreurs
+      const errorMessage = e.response?.data?.error?.message || e.message || 'Erreur lors de la validation du code promo'
       error.value = errorMessage
       return {
         valid: false,
@@ -160,11 +234,12 @@ export function useReservation() {
     error.value = null
 
     try {
-      const response = await apiClient.get(`/reservations/${id}`)
+      // apiClient returns response.data directly due to interceptor
+      const responseData = await apiClient.get(`/reservations/${id}`)
       
-      if (response.data.success) {
-        reservation.value = response.data.data
-        return response.data.data
+      if (responseData.success) {
+        reservation.value = responseData.data
+        return responseData.data
       }
       return null
     } catch (e: any) {
@@ -183,19 +258,30 @@ export function useReservation() {
     error.value = null
 
     try {
-      const response = await apiClient.get(`/reservations/${reservationId}/invoice`, {
-        responseType: 'blob'
+      // Use axios directly to bypass the interceptor for blob responses
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/reservations/${reservationId}/invoice`, {
+        responseType: 'blob',
+        headers: {
+          'Accept': 'application/pdf'
+        }
       })
 
-      // Create blob link to download
-      const url = window.URL.createObjectURL(new Blob([response.data]))
+      // response.data is already a Blob
+      const blob = response.data
+      
+      // Create blob URL and trigger download
+      const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('download', `invoice-${reservationId}.pdf`)
+      link.setAttribute('download', `facture-${reservationId}.pdf`)
       document.body.appendChild(link)
       link.click()
-      link.remove()
-      window.URL.revokeObjectURL(url)
+      
+      // Cleanup
+      setTimeout(() => {
+        link.remove()
+        window.URL.revokeObjectURL(url)
+      }, 100)
     } catch (e: any) {
       error.value = e.response?.data?.error?.message || e.message || 'Failed to download invoice'
       throw new Error(error.value)

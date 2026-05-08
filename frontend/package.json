@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "build:production": "vite build --config vite.config.production.ts",
+    "preview": "vite preview",
+    "generate:sitemap": "npx tsx generate-sitemap.ts"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
@@ -27,6 +29,7 @@
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.2",
     "@vue/tsconfig": "^0.8.1",
+    "terser": "^5.46.1",
     "typescript": "~5.9.3",
     "vite": "^7.3.1",
     "vue-tsc": "^3.1.5"

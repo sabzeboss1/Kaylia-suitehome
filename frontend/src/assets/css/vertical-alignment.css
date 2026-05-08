@@ -1,0 +1,136 @@
+/**
+ * Système d'alignement vertical cohérent
+ * Basé sur les positions du logo et du bouton CTA dans le header
+ * 
+ * Ligne verticale GAUCHE: Début du logo
+ * Ligne verticale DROITE: Fin du bouton CTA
+ */
+
+:root {
+  /* Desktop: padding du container dans le header (px-8 = 2rem = 32px) */
+  --header-padding-x: 2rem;
+  
+  /* Mobile: padding du header mobile (px-3 = 0.75rem = 12px) */
+  --header-padding-x-mobile: 0.75rem;
+  
+  /* Max width du container (max-w-7xl = 80rem = 1280px) */
+  --content-max-width: 80rem;
+}
+
+/**
+ * Classes d'alignement pour le contenu
+ * Ces classes assurent que le contenu commence et se termine
+ * exactement aux mêmes positions que le logo et le bouton CTA
+ */
+
+/* Alignement standard - utilise le même padding que le header */
+.content-aligned {
+  padding-left: var(--header-padding-x-mobile);
+  padding-right: var(--header-padding-x-mobile);
+}
+
+@media (min-width: 768px) {
+  .content-aligned {
+    padding-left: var(--header-padding-x);
+    padding-right: var(--header-padding-x);
+  }
+}
+
+/* Container avec alignement - combine max-width et padding aligné */
+.container-aligned {
+  max-width: var(--content-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--header-padding-x-mobile);
+  padding-right: var(--header-padding-x-mobile);
+}
+
+@media (min-width: 768px) {
+  .container-aligned {
+    padding-left: var(--header-padding-x);
+    padding-right: var(--header-padding-x);
+  }
+}
+
+/* Section avec alignement complet */
+.section-aligned {
+  width: 100%;
+}
+
+.section-aligned > .section-content {
+  max-width: var(--content-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--header-padding-x-mobile);
+  padding-right: var(--header-padding-x-mobile);
+}
+
+@media (min-width: 768px) {
+  .section-aligned > .section-content {
+    padding-left: var(--header-padding-x);
+    padding-right: var(--header-padding-x);
+  }
+}
+
+/**
+ * Classes utilitaires pour des cas spécifiques
+ */
+
+/* Contenu qui doit s'étendre sur toute la largeur mais avec padding aligné */
+.full-width-aligned {
+  width: 100%;
+  padding-left: var(--header-padding-x-mobile);
+  padding-right: var(--header-padding-x-mobile);
+}
+
+@media (min-width: 768px) {
+  .full-width-aligned {
+    padding-left: var(--header-padding-x);
+    padding-right: var(--header-padding-x);
+  }
+}
+
+/* Pour les éléments qui doivent ignorer l'alignement (images plein écran, etc.) */
+.no-alignment {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/**
+ * Guides visuels pour le développement (à activer temporairement)
+ * Décommenter pour voir les lignes verticales d'alignement
+ */
+
+/*
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 0, 0, 0.3);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+body::before {
+  left: var(--header-padding-x-mobile);
+}
+
+body::after {
+  right: var(--header-padding-x-mobile);
+}
+
+@media (min-width: 768px) {
+  body::before {
+    left: calc(50% - var(--content-max-width) / 2 + var(--header-padding-x));
+  }
+  
+  body::after {
+    right: calc(50% - var(--content-max-width) / 2 + var(--header-padding-x));
+  }
+}
+*/
